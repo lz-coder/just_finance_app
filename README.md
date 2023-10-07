@@ -1,3 +1,3 @@
 # just_finance_app
 
-A new Flutter project.
+Simple application to control your finances build with Flutter and sqlite database
