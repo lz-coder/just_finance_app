@@ -1,10 +1,10 @@
 class TransactionInfo {
   final int id;
-  final String title;
+  String title;
   final int incomming;
-  final double value;
+  double value;
 
-  const TransactionInfo({
+  TransactionInfo({
     required this.id,
     required this.title,
     required this.incomming,
@@ -19,6 +19,9 @@ class TransactionInfo {
       'value': value,
     };
   }
+
+  set setTitle(value) => title = value;
+  set setValue(double newValue) => value = newValue;
 
   @override
   String toString() {

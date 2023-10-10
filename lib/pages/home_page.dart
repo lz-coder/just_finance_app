@@ -36,6 +36,11 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  updateTransaction(TransactionInfo transaction) async {
+    await transactionsDb.updateTransaction(transaction);
+    updateWalletValue();
+  }
+
   removeTransaction(TransactionInfo transaction) async {
     await transactionsDb.removeTransaction(transaction);
     updateWalletValue();
@@ -65,6 +70,23 @@ class _HomePageState extends State<HomePage> {
             incomming: incomming,
           );
         });
+  }
+
+  void _showEditTransactionDialog(
+    Function updater,
+    bool incomming,
+    TransactionInfo transaction,
+  ) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return TransactionDialog(
+          insertCallback: updater,
+          incomming: incomming,
+          transaction: transaction,
+        );
+      },
+    );
   }
 
   @override
@@ -108,6 +130,8 @@ class _HomePageState extends State<HomePage> {
           children: [
             HomePageTransactions(
               dismissCallback: removeTransaction,
+              transactionUpdater: updateTransaction,
+              updateDialogCallback: _showEditTransactionDialog,
             ),
             const Icon(Icons.graphic_eq),
           ],

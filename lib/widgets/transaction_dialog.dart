@@ -7,11 +7,13 @@ var transactionsDb = TransactionsDatabase();
 class TransactionDialog extends StatefulWidget {
   final Function insertCallback;
   final bool incomming;
+  final TransactionInfo? transaction;
 
   const TransactionDialog({
     super.key,
     required this.insertCallback,
     required this.incomming,
+    this.transaction,
   });
 
   @override
@@ -28,9 +30,13 @@ class _TransactionDialogState extends State<TransactionDialog> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.transaction != null) {
+      valueController.text = widget.transaction!.value.toString();
+      titleController.text = widget.transaction!.title;
+    }
     return Dialog(
       child: Container(
-        height: 400,
+        height: 250,
         width: 400,
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         decoration: BoxDecoration(
@@ -40,9 +46,11 @@ class _TransactionDialogState extends State<TransactionDialog> {
         ),
         child: Column(
           children: [
-            const Text(
-              'New Transaction',
-              style: TextStyle(fontSize: 18),
+            Text(
+              widget.transaction != null
+                  ? 'Edit Transaction'
+                  : 'New Transaction',
+              style: const TextStyle(fontSize: 18),
             ),
             TextField(
               controller: titleController,
@@ -53,34 +61,42 @@ class _TransactionDialogState extends State<TransactionDialog> {
               controller: valueController,
               decoration: const InputDecoration(label: Text('Value')),
             ),
+            const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 ElevatedButton(
                   onPressed: () async {
                     try {
-                      late int lastTransactionId;
-                      final transactionsList =
-                          await transactionsDb.transactionsList();
-                      if (transactionsList.isNotEmpty) {
-                        lastTransactionId = transactionsList.last.id + 1;
+                      if (widget.transaction == null) {
+                        late int lastTransactionId;
+                        final transactionsList =
+                            await transactionsDb.transactionsList();
+                        if (transactionsList.isNotEmpty) {
+                          lastTransactionId = transactionsList.last.id + 1;
+                        } else {
+                          lastTransactionId = 0;
+                        }
+                        final transaction = TransactionInfo(
+                          id: lastTransactionId,
+                          title: titleController.text.isNotEmpty
+                              ? titleController.text
+                              : 'New transaction',
+                          incomming: widget.incomming ? 1 : 0,
+                          value: valueController.text.isNotEmpty
+                              ? double.parse(valueController.text)
+                              : 1,
+                        );
+                        await widget.insertCallback(transaction);
                       } else {
-                        lastTransactionId = 0;
+                        widget.transaction!.setTitle = titleController.text;
+                        widget.transaction!.setValue =
+                            double.parse(valueController.text);
+                        await widget.insertCallback(widget.transaction);
                       }
-                      final transaction = TransactionInfo(
-                        id: lastTransactionId,
-                        title: titleController.text.isNotEmpty
-                            ? titleController.text
-                            : 'New transaction',
-                        incomming: widget.incomming ? 1 : 0,
-                        value: valueController.text.isNotEmpty
-                            ? double.parse(valueController.text)
-                            : 1,
-                      );
-                      await widget.insertCallback(transaction);
                       if (context.mounted) Navigator.of(context).pop();
                     } catch (err) {
-                      debugPrint(err.toString());
+                      debugPrint('error: ${err.toString()}');
                     }
                   },
                   child: const Text('Add'),

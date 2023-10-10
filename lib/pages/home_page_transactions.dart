@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:just_finance_app/db/database.dart';
-import 'package:just_finance_app/src/transaction_info.dart';
 import 'package:just_finance_app/widgets/transaction_card.dart';
 
 final transactionsDb = TransactionsDatabase();
 
 class HomePageTransactions extends StatelessWidget {
-  final Future futureBuilder;
   final Function dismissCallback;
+  final Function transactionUpdater;
+  final Function updateDialogCallback;
 
   const HomePageTransactions({
     super.key,
-    required this.futureBuilder,
     required this.dismissCallback,
+    required this.transactionUpdater,
+    required this.updateDialogCallback,
   });
 
   @override
@@ -45,7 +46,11 @@ class HomePageTransactions extends StatelessWidget {
                     ),
                   ),
                 ),
-                child: TransactionCard(transaction: transaction),
+                child: TransactionCard(
+                  transaction: transaction,
+                  updater: transactionUpdater,
+                  dialogCallback: updateDialogCallback,
+                ),
               );
             },
           );
