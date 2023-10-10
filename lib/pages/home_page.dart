@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var onHomeTab = true;
-  var transactionsDbList = transactionsDb.transactionsList();
+  double walletValue = 0;
 
   changeOnHomeTab(bool value) {
     setState(() {
@@ -25,22 +25,38 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  _updateTransactionsList() {
-    setState(() {
-      transactionsDbList = transactionsDb.transactionsList();
-    });
-  }
-
   insertTransaction(TransactionInfo transaction) async {
     await transactionsDb.insertTransaction(transaction);
-    _updateTransactionsList();
+    setState(() {
+      if (transaction.incomming == 1) {
+        walletValue += transaction.value;
+      } else {
+        walletValue -= transaction.value;
+      }
+    });
   }
 
   removeTransaction(TransactionInfo transaction) async {
     await transactionsDb.removeTransaction(transaction);
+    updateWalletValue();
   }
 
-  void _showTransactionDialog(TransactionInfo transaction, bool incomming) {
+  updateWalletValue() async {
+    var transactions = await transactionsDb.transactionsList();
+    double value = 0;
+    for (var transaction in transactions) {
+      if (transaction.incomming == 1) {
+        value += transaction.value;
+      } else {
+        value -= transaction.value;
+      }
+    }
+    setState(() {
+      walletValue = value;
+    });
+  }
+
+  void _showTransactionDialog(bool incomming) {
     showDialog(
         context: context,
         builder: (context) {
@@ -52,40 +68,33 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    updateWalletValue();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopBar(totalValue: 100, changeTabCallback: changeOnHomeTab),
+      appBar:
+          TopBar(totalValue: walletValue, changeTabCallback: changeOnHomeTab),
       floatingActionButton: onHomeTab
           ? Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const SizedBox(
+                SizedBox(
                   height: 46,
                   child: FloatingActionButton(
                     backgroundColor: Color.fromARGB(255, 216, 94, 94),
-                    onPressed: null,
+                    onPressed: () => _showTransactionDialog(false),
                     child: Icon(Icons.remove),
                   ),
                 ),
                 FloatingActionButton(
                   backgroundColor: const Color.fromARGB(255, 94, 216, 94),
                   onPressed: () async {
-                    late int lastTransactionId;
-                    final transactionsList =
-                        await transactionsDb.transactionsList();
-                    if (transactionsList.isNotEmpty) {
-                      lastTransactionId = transactionsList.last.id + 1;
-                    } else {
-                      lastTransactionId = 0;
-                    }
-                    final transaction = TransactionInfo(
-                      id: lastTransactionId,
-                      title: 'teste',
-                      incomming: 1,
-                      value: 1000,
-                    );
-                    //await insertTransaction(transaction);
-                    _showTransactionDialog(transaction, true);
+                    _showTransactionDialog(true);
                   },
                   child: const Icon(Icons.add),
                 ),
@@ -98,7 +107,6 @@ class _HomePageState extends State<HomePage> {
           physics: const NeverScrollableScrollPhysics(),
           children: [
             HomePageTransactions(
-              futureBuilder: transactionsDbList,
               dismissCallback: removeTransaction,
             ),
             const Icon(Icons.graphic_eq),
