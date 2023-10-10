@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_finance_app/pages/home_page_graphics.dart';
 import 'package:just_finance_app/pages/home_page_transactions.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
 import 'package:just_finance_app/widgets/topbar.dart';
@@ -91,7 +92,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     updateWalletValue();
   }
@@ -108,9 +108,9 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   height: 46,
                   child: FloatingActionButton(
-                    backgroundColor: Color.fromARGB(255, 216, 94, 94),
+                    backgroundColor: const Color.fromARGB(255, 216, 94, 94),
                     onPressed: () => _showTransactionDialog(false),
-                    child: Icon(Icons.remove),
+                    child: const Icon(Icons.remove),
                   ),
                 ),
                 FloatingActionButton(
@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage> {
               transactionUpdater: updateTransaction,
               updateDialogCallback: _showEditTransactionDialog,
             ),
-            const Icon(Icons.graphic_eq),
+            HomePageGraphics(),
           ],
         ),
       ),

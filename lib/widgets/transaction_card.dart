@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
-import 'package:just_finance_app/widgets/transaction_dialog.dart';
 
 class TransactionCard extends StatelessWidget {
   final TransactionInfo transaction;
@@ -39,7 +38,7 @@ class TransactionCard extends StatelessWidget {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadiusDirectional.circular(10),
-                color: Color.fromARGB(141, 255, 255, 255),
+                color: const Color.fromARGB(141, 255, 255, 255),
               ),
               child: const Icon(
                 Icons.edit,

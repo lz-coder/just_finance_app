@@ -7,6 +7,5 @@ final transactionsDb = TransactionsDatabase();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  print(await transactionsDb.transactionsList());
   runApp(const MainApp());
 }
