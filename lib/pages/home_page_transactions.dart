@@ -25,7 +25,9 @@ class HomePageTransactions extends StatelessWidget {
           return ListView.builder(
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
-              final transaction = snapshot.data![index];
+              // reverse de order on the list
+              final transaction =
+                  snapshot.data![snapshot.data!.length - index - 1];
               return Dismissible(
                 key: UniqueKey(),
                 direction: DismissDirection.endToStart,
