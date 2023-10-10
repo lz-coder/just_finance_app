@@ -16,14 +16,11 @@ class TransactionCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: transaction.incomming == 0
-            ? const Color.fromARGB(228, 179, 78, 71)
-            : const Color.fromARGB(227, 71, 179, 85),
+            ? Color.fromARGB(146, 180, 65, 65)
+            : const Color.fromARGB(146, 71, 179, 85),
       ),
       child: ListTile(
-        leading: Column(children: [
-          Text('${transaction.id}'),
-          Text('\$ ${transaction.value}')
-        ]),
+        leading: Text('\$ ${transaction.value}'),
         title: Text(transaction.title),
       ),
     );
