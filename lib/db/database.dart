@@ -43,6 +43,16 @@ class TransactionsDatabase {
     );
   }
 
+  Future<void> updateTransaction(TransactionInfo transaction) async {
+    final db = await _db;
+    await db.update(
+      transactionsTable,
+      transaction.toMap(),
+      where: 'id = ? ',
+      whereArgs: [transaction.id],
+    );
+  }
+
   Future<List<TransactionInfo>> transactionsList() async {
     final db = await _db;
     final List<Map<String, dynamic>> maps = await db.query('transactions');
