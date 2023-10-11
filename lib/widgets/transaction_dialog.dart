@@ -99,7 +99,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                       debugPrint('error: ${err.toString()}');
                     }
                   },
-                  child: const Text('Add'),
+                  child: Text(widget.transaction == null ? 'Add' : 'update'),
                 ),
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
