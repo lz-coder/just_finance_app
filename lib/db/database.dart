@@ -1,29 +1,40 @@
+import 'package:just_finance_app/src/categorie.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 const transactionsTable = 'transactions';
 
-class TransactionsDatabase {
+class CoreDatabase {
   late final Future<Database> _db = () async {
     return await openDatabase(
-      join(await getDatabasesPath(), 'transactions_database.db'),
+      join(await getDatabasesPath(), 'core_database.db'),
       onCreate: (db, version) async {
-        return await db.execute(
+        await db.execute(
+          '''
+          CREATE TABLE categories(
+            id INTEGER PRIMARY KEY,
+            name TEXT,
+            type TEXT
+          );''',
+        );
+        await db.execute(
           '''
           CREATE TABLE $transactionsTable(
             id INTEGER PRIMARY KEY,
             title TEXT,
             incomming INTEGER,
-            value REAL
-            )''',
+            value REAL,
+            categorie INTEGER,
+            FOREIGN KEY(categorie) REFERENCES incomming_categories(id)
+            );''',
         );
       },
       version: 1,
     );
   }();
 
-  TransactionsDatabase();
+  CoreDatabase();
 
   Future<void> insertTransaction(TransactionInfo transaction) async {
     final db = await _db;
@@ -70,5 +81,27 @@ class TransactionsDatabase {
   Future<int> transactionsCount() async {
     final transactionsList = await this.transactionsList();
     return transactionsList.length;
+  }
+
+  Future<List<Categorie>> incommingCategories() async {
+    final db = await _db;
+    final List<Map<String, dynamic>> maps =
+        await db.query('incomming_categories');
+    return List.generate(maps.length, (index) {
+      return Categorie(
+        id: maps[index]['id'],
+        name: maps[index]['name'],
+        type: maps[index]['type'],
+      );
+    });
+  }
+
+  Future<void> insertCategorie(Categorie categorie) async {
+    final db = await _db;
+    await db.insert(
+      'incomming_categories',
+      categorie.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 }
