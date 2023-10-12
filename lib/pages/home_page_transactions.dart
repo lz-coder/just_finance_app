@@ -44,7 +44,7 @@ class HomePageTransactions extends StatelessWidget {
                     child: Icon(
                       Icons.delete,
                       color: Colors.white,
-                      size: 48,
+                      size: 46,
                     ),
                   ),
                 ),
