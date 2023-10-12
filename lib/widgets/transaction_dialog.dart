@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
 
-var transactionsDb = TransactionsDatabase();
+var coreDatabase = CoreDatabase();
 
 class TransactionDialog extends StatefulWidget {
   final Function insertCallback;
@@ -71,7 +71,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                       if (widget.transaction == null) {
                         late int lastTransactionId;
                         final transactionsList =
-                            await transactionsDb.transactionsList();
+                            await coreDatabase.transactionsList();
                         if (transactionsList.isNotEmpty) {
                           lastTransactionId = transactionsList.last.id + 1;
                         } else {

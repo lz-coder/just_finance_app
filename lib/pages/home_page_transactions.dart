@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/widgets/transaction_card.dart';
 
-final transactionsDb = TransactionsDatabase();
+final coreDatabase = CoreDatabase();
 
 class HomePageTransactions extends StatelessWidget {
   final Function dismissCallback;
@@ -19,7 +19,7 @@ class HomePageTransactions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: transactionsDb.transactionsList(),
+      future: coreDatabase.transactionsList(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return ListView.builder(

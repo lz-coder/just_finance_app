@@ -7,7 +7,7 @@ import 'package:just_finance_app/widgets/transaction_dialog.dart';
 
 import '../db/database.dart';
 
-final transactionsDb = TransactionsDatabase();
+final coreDatabase = CoreDatabase();
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   insertTransaction(TransactionInfo transaction) async {
-    await transactionsDb.insertTransaction(transaction);
+    await coreDatabase.insertTransaction(transaction);
     setState(() {
       if (transaction.incomming == 1) {
         walletValue += transaction.value;
@@ -38,17 +38,17 @@ class _HomePageState extends State<HomePage> {
   }
 
   updateTransaction(TransactionInfo transaction) async {
-    await transactionsDb.updateTransaction(transaction);
+    await coreDatabase.updateTransaction(transaction);
     updateWalletValue();
   }
 
   removeTransaction(TransactionInfo transaction) async {
-    await transactionsDb.removeTransaction(transaction);
+    await coreDatabase.removeTransaction(transaction);
     updateWalletValue();
   }
 
   updateWalletValue() async {
-    var transactions = await transactionsDb.transactionsList();
+    var transactions = await coreDatabase.transactionsList();
     double value = 0;
     for (var transaction in transactions) {
       if (transaction.incomming == 1) {
