@@ -59,7 +59,7 @@ class CoreDatabase {
     await db.update(
       transactionsTable,
       transaction.toMap(),
-      where: 'id = ? ',
+      where: 'id = ?',
       whereArgs: [transaction.id],
     );
   }
@@ -85,8 +85,27 @@ class CoreDatabase {
 
   Future<List<Categorie>> incommingCategories() async {
     final db = await _db;
-    final List<Map<String, dynamic>> maps =
-        await db.query('incomming_categories');
+    final List<Map<String, dynamic>> maps = await db.query(
+      'categories',
+      where: 'type = ?',
+      whereArgs: [CategorieTypes.incomming],
+    );
+    return List.generate(maps.length, (index) {
+      return Categorie(
+        id: maps[index]['id'],
+        name: maps[index]['name'],
+        type: maps[index]['type'],
+      );
+    });
+  }
+
+  Future<List<Categorie>> dispenseCategories() async {
+    final db = await _db;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'categories',
+      where: 'type = ?',
+      whereArgs: [CategorieTypes.dispense],
+    );
     return List.generate(maps.length, (index) {
       return Categorie(
         id: maps[index]['id'],
@@ -99,7 +118,7 @@ class CoreDatabase {
   Future<void> insertCategorie(Categorie categorie) async {
     final db = await _db;
     await db.insert(
-      'incomming_categories',
+      'categories',
       categorie.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
