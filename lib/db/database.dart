@@ -26,7 +26,7 @@ class CoreDatabase {
             incomming INTEGER,
             value REAL,
             categorie INTEGER,
-            FOREIGN KEY(categorie) REFERENCES incomming_categories(id)
+            FOREIGN KEY(categorie) REFERENCES categories(id)
             );''',
         );
       },
