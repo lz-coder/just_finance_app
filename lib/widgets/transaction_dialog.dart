@@ -39,7 +39,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
     }
     return Dialog(
       child: Container(
-        height: 280,
+        height: 400,
         width: 400,
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         decoration: BoxDecoration(
@@ -48,6 +48,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
               : const Color.fromARGB(155, 80, 47, 39),
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Text(
               widget.transaction != null
@@ -71,14 +72,25 @@ class _TransactionDialogState extends State<TransactionDialog> {
               builder: (context, snapshot) {
                 final List<DropdownMenuEntry<Categorie>> categorieEntries = [];
                 if (snapshot.hasData) {
+                  //selectedCategorie = snapshot.data![0];
                   for (final categorie in snapshot.data!) {
                     categorieEntries.add(DropdownMenuEntry(
                         value: categorie, label: categorie.name));
                   }
                 }
+                Categorie? getInitialSelection() {
+                  Categorie? categorie;
+                  if (selectedCategorie == null && snapshot.hasData) {
+                    categorie = snapshot.data![0];
+                  } else if (selectedCategorie != null) {
+                    categorie = selectedCategorie!;
+                  }
+                  return categorie;
+                }
+
                 return DropdownMenu<Categorie>(
-                  initialSelection:
-                      snapshot.data != null ? snapshot.data![0] : null,
+                  width: 200,
+                  initialSelection: getInitialSelection(),
                   controller: categoriesController,
                   label: const Text('Categorie'),
                   dropdownMenuEntries: categorieEntries,
@@ -90,7 +102,6 @@ class _TransactionDialogState extends State<TransactionDialog> {
                 );
               },
             ),
-            const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
