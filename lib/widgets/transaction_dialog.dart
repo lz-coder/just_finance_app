@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_finance_app/db/database.dart';
+import 'package:just_finance_app/src/categorie.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
 
 var coreDatabase = CoreDatabase();
@@ -23,6 +24,8 @@ class TransactionDialog extends StatefulWidget {
 class _TransactionDialogState extends State<TransactionDialog> {
   final valueController = TextEditingController();
   final titleController = TextEditingController();
+  final categoriesController = TextEditingController();
+  Categorie? selectedCategorie;
 
   void closeDialog(BuildContext context) {
     Navigator.of(context).pop();
@@ -36,7 +39,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
     }
     return Dialog(
       child: Container(
-        height: 250,
+        height: 280,
         width: 400,
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         decoration: BoxDecoration(
@@ -60,6 +63,32 @@ class _TransactionDialogState extends State<TransactionDialog> {
               keyboardType: TextInputType.number,
               controller: valueController,
               decoration: const InputDecoration(label: Text('Value')),
+            ),
+            FutureBuilder(
+              future: widget.incomming
+                  ? coreDatabase.incommingCategories()
+                  : coreDatabase.dispenseCategories(),
+              builder: (context, snapshot) {
+                final List<DropdownMenuEntry<Categorie>> categorieEntries = [];
+                if (snapshot.hasData) {
+                  for (final categorie in snapshot.data!) {
+                    categorieEntries.add(DropdownMenuEntry(
+                        value: categorie, label: categorie.name));
+                  }
+                }
+                return DropdownMenu<Categorie>(
+                  initialSelection:
+                      snapshot.data != null ? snapshot.data![0] : null,
+                  controller: categoriesController,
+                  label: const Text('Categorie'),
+                  dropdownMenuEntries: categorieEntries,
+                  onSelected: (Categorie? categorie) {
+                    setState(() {
+                      selectedCategorie = categorie;
+                    });
+                  },
+                );
+              },
             ),
             const Spacer(),
             Row(
