@@ -74,6 +74,7 @@ class CoreDatabase {
         title: maps[index]['title'],
         incomming: maps[index]['incomming'],
         value: maps[index]['value'],
+        categorie: maps[index]['categorie'],
       );
     });
   }
@@ -113,6 +114,21 @@ class CoreDatabase {
         type: maps[index]['type'],
       );
     });
+  }
+
+  Future<Categorie> getCategorieById(int id) async {
+    final db = await _db;
+    final List<Map<String, dynamic>> map = await db.query(
+      'categories',
+      where: 'id = ?',
+      whereArgs: [id],
+      limit: 1,
+    );
+    return Categorie(
+      id: map[0]['id'],
+      name: map[0]['name'],
+      type: map[0]['type'],
+    );
   }
 
   Future<void> insertCategorie(Categorie categorie) async {
