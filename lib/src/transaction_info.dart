@@ -3,12 +3,14 @@ class TransactionInfo {
   String title;
   final int incomming;
   double value;
+  int categorie;
 
   TransactionInfo({
     required this.id,
     required this.title,
     required this.incomming,
     required this.value,
+    required this.categorie,
   });
 
   Map<String, dynamic> toMap() {
@@ -17,6 +19,7 @@ class TransactionInfo {
       'title': title,
       'incomming': incomming,
       'value': value,
+      'categorie': categorie,
     };
   }
 
@@ -25,6 +28,6 @@ class TransactionInfo {
 
   @override
   String toString() {
-    return 'Transaction{id: $id, title: $title, incomming: $incomming, value: $value}';
+    return 'Transaction{id: $id, title: $title, incomming: $incomming, value: $value}, categorie_is: $categorie';
   }
 }
