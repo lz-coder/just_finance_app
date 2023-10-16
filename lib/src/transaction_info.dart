@@ -23,8 +23,9 @@ class TransactionInfo {
     };
   }
 
-  set setTitle(value) => title = value;
+  set setTitle(String value) => title = value;
   set setValue(double newValue) => value = newValue;
+  set setCategorie(int value) => categorie = value;
 
   @override
   String toString() {
