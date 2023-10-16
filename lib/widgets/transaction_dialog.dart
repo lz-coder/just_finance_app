@@ -31,12 +31,19 @@ class _TransactionDialogState extends State<TransactionDialog> {
     Navigator.of(context).pop();
   }
 
+  void _setSelectedCategorie(Categorie value) {
+    setState(() {
+      selectedCategorie = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.transaction != null) {
       valueController.text = widget.transaction!.value.toString();
       titleController.text = widget.transaction!.title;
     }
+
     return Dialog(
       child: Container(
         height: 400,
@@ -77,29 +84,29 @@ class _TransactionDialogState extends State<TransactionDialog> {
                     categorieEntries.add(DropdownMenuEntry(
                         value: categorie, label: categorie.name));
                   }
-                }
-                Categorie? getInitialSelection() {
-                  Categorie? categorie;
-                  if (selectedCategorie == null && snapshot.hasData) {
-                    categorie = snapshot.data![0];
-                  } else if (selectedCategorie != null) {
-                    categorie = selectedCategorie!;
-                  }
-                  return categorie;
-                }
 
-                return DropdownMenu<Categorie>(
-                  width: 200,
-                  initialSelection: getInitialSelection(),
-                  controller: categoriesController,
-                  label: const Text('Categorie'),
-                  dropdownMenuEntries: categorieEntries,
-                  onSelected: (Categorie? categorie) {
-                    setState(() {
-                      selectedCategorie = categorie;
-                    });
-                  },
-                );
+                  if (widget.transaction != null && selectedCategorie == null) {
+                    for (Categorie categorie in snapshot.data!) {
+                      if (categorie.id == widget.transaction!.categorie) {
+                        selectedCategorie = categorie;
+                      }
+                    }
+                  }
+
+                  return DropdownMenu<Categorie>(
+                    width: 200,
+                    initialSelection: selectedCategorie ?? snapshot.data![0],
+                    controller: categoriesController,
+                    label: const Text('Categorie'),
+                    dropdownMenuEntries: categorieEntries,
+                    onSelected: (Categorie? categorie) {
+                      setState(() {
+                        selectedCategorie = categorie;
+                      });
+                    },
+                  );
+                }
+                return const CircularProgressIndicator();
               },
             ),
             Row(
@@ -126,12 +133,17 @@ class _TransactionDialogState extends State<TransactionDialog> {
                           value: valueController.text.isNotEmpty
                               ? double.parse(valueController.text)
                               : 1,
+                          categorie: selectedCategorie != null
+                              ? selectedCategorie!.id
+                              : 0,
                         );
                         await widget.insertCallback(transaction);
                       } else {
                         widget.transaction!.setTitle = titleController.text;
                         widget.transaction!.setValue =
                             double.parse(valueController.text);
+                        widget.transaction!.setCategorie =
+                            selectedCategorie!.id;
                         await widget.insertCallback(widget.transaction);
                       }
                       if (context.mounted) Navigator.of(context).pop();
