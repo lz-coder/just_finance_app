@@ -17,9 +17,6 @@ void main() async {
       Categorie(id: 2, name: 'Contas', type: CategorieTypes.dispense));
   coreDatabase.insertCategorie(
       Categorie(id: 3, name: 'Gastos pessoais', type: CategorieTypes.dispense));
-  var categories = await coreDatabase.incommingCategories();
-  print(categories);
-  print(await coreDatabase.dispenseCategories());
 
   runApp(const MainApp());
 }
