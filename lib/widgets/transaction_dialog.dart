@@ -91,11 +91,13 @@ class _TransactionDialogState extends State<TransactionDialog> {
                         selectedCategorie = categorie;
                       }
                     }
+                  } else if (widget.transaction == null) {
+                    selectedCategorie = snapshot.data![0];
                   }
 
                   return DropdownMenu<Categorie>(
                     width: 200,
-                    initialSelection: selectedCategorie ?? snapshot.data![0],
+                    initialSelection: selectedCategorie,
                     controller: categoriesController,
                     label: const Text('Categorie'),
                     dropdownMenuEntries: categorieEntries,
