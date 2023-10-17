@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
+
+final coreDatabase = CoreDatabase();
 
 class TransactionCard extends StatelessWidget {
   final TransactionInfo transaction;
@@ -20,12 +23,23 @@ class TransactionCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: transaction.incomming == 0
-            ? const Color.fromARGB(146, 180, 65, 65)
-            : const Color.fromARGB(146, 71, 179, 85),
+            ? const Color.fromARGB(204, 117, 76, 76)
+            : const Color.fromARGB(204, 83, 117, 76),
       ),
       child: ListTile(
         leading: Text('\$ ${transaction.value}'),
         title: Text(transaction.title),
+        subtitle: FutureBuilder(
+          future: coreDatabase.getCategorieById(transaction.categorie),
+          builder: (context, snapshot) {
+            debugPrint('${snapshot.data}');
+            if (snapshot.hasData) {
+              return Text(snapshot.data != null ? snapshot.data!.name : '');
+            } else {
+              return const Text('');
+            }
+          },
+        ),
         trailing: GestureDetector(
           onTap: () => dialogCallback(
             updater,
