@@ -26,15 +26,10 @@ class _TransactionDialogState extends State<TransactionDialog> {
   final titleController = TextEditingController();
   final categoriesController = TextEditingController();
   Categorie? selectedCategorie;
+  Categorie? preSelectedCategorie;
 
   void closeDialog(BuildContext context) {
     Navigator.of(context).pop();
-  }
-
-  void _setSelectedCategorie(Categorie value) {
-    setState(() {
-      selectedCategorie = value;
-    });
   }
 
   @override
@@ -91,13 +86,14 @@ class _TransactionDialogState extends State<TransactionDialog> {
                         selectedCategorie = categorie;
                       }
                     }
-                  } else if (widget.transaction == null) {
-                    selectedCategorie = snapshot.data![0];
+                  } else if (widget.transaction == null &&
+                      selectedCategorie == null) {
+                    preSelectedCategorie = snapshot.data![0];
                   }
 
                   return DropdownMenu<Categorie>(
                     width: 200,
-                    initialSelection: selectedCategorie,
+                    initialSelection: preSelectedCategorie ?? selectedCategorie,
                     controller: categoriesController,
                     label: const Text('Categorie'),
                     dropdownMenuEntries: categorieEntries,
@@ -137,7 +133,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                               : 1,
                           categorie: selectedCategorie != null
                               ? selectedCategorie!.id
-                              : 0,
+                              : preSelectedCategorie!.id,
                         );
                         await widget.insertCallback(transaction);
                       } else {
