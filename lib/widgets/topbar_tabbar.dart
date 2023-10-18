@@ -14,15 +14,11 @@ class TopbarTabBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return TabBar(
         isScrollable: false,
-        indicatorPadding: const EdgeInsets.symmetric(vertical: 4),
-        indicator: BoxDecoration(
-          color: const Color.fromARGB(146, 83, 117, 76),
-          borderRadius: BorderRadius.circular(20),
-        ),
+        indicatorColor: const Color.fromARGB(146, 83, 117, 76),
+        indicatorWeight: 3,
         labelColor: const Color.fromARGB(255, 231, 227, 226),
         unselectedLabelColor: const Color.fromARGB(255, 89, 91, 94),
         enableFeedback: false,
-        splashBorderRadius: BorderRadius.circular(20),
         splashFactory: NoSplash.splashFactory,
         onTap: (value) {
           switch (value) {
