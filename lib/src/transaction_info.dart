@@ -4,6 +4,7 @@ class TransactionInfo {
   final int incomming;
   double value;
   int categorie;
+  String categorieName;
 
   TransactionInfo({
     required this.id,
@@ -11,6 +12,7 @@ class TransactionInfo {
     required this.incomming,
     required this.value,
     required this.categorie,
+    required this.categorieName,
   });
 
   Map<String, dynamic> toMap() {
@@ -20,6 +22,7 @@ class TransactionInfo {
       'incomming': incomming,
       'value': value,
       'categorie': categorie,
+      'categorieName': categorieName,
     };
   }
 
