@@ -134,14 +134,18 @@ class _TransactionDialogState extends State<TransactionDialog> {
                           categorie: selectedCategorie != null
                               ? selectedCategorie!.id
                               : preSelectedCategorie!.id,
+                          categorieName: selectedCategorie != null
+                              ? selectedCategorie!.name
+                              : preSelectedCategorie!.name,
                         );
                         await widget.insertCallback(transaction);
                       } else {
-                        widget.transaction!.setTitle = titleController.text;
-                        widget.transaction!.setValue =
+                        widget.transaction!.title = titleController.text;
+                        widget.transaction!.value =
                             double.parse(valueController.text);
-                        widget.transaction!.setCategorie =
-                            selectedCategorie!.id;
+                        widget.transaction!.categorie = selectedCategorie!.id;
+                        widget.transaction!.categorieName =
+                            selectedCategorie!.name;
                         await widget.insertCallback(widget.transaction);
                       }
                       if (context.mounted) Navigator.of(context).pop();
