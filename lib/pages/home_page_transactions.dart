@@ -8,6 +8,7 @@ class HomePageTransactions extends StatelessWidget {
   final Function dismissCallback;
   final Function transactionUpdater;
   final Function updateDialogCallback;
+  final _viewCount = 30;
 
   const HomePageTransactions({
     super.key,
@@ -23,8 +24,10 @@ class HomePageTransactions extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return ListView.builder(
-            padding: const EdgeInsets.only(bottom: 74),
-            itemCount: snapshot.data!.length,
+            padding: const EdgeInsets.only(bottom: 80),
+            itemCount: snapshot.data!.length >= _viewCount
+                ? _viewCount
+                : snapshot.data!.length,
             itemBuilder: (context, index) {
               // reverse the order on the list
               final transaction =
@@ -58,7 +61,7 @@ class HomePageTransactions extends StatelessWidget {
             },
           );
         } else {
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         }
       },
     );
