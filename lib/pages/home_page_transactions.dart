@@ -23,6 +23,7 @@ class HomePageTransactions extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return ListView.builder(
+            padding: const EdgeInsets.only(bottom: 74),
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               // reverse the order on the list
@@ -35,12 +36,11 @@ class HomePageTransactions extends StatelessWidget {
                   await dismissCallback(transaction);
                   snapshot.data!.remove(transaction);
                 },
-                background: DecoratedBox(
+                background: const DecoratedBox(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.red,
+                    color: Color.fromARGB(199, 244, 67, 54),
                   ),
-                  child: const Align(
+                  child: Align(
                     alignment: Alignment.centerRight,
                     child: Icon(
                       Icons.delete,
