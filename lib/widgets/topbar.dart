@@ -3,11 +3,15 @@ import 'package:just_finance_app/widgets/topbar_tabbar.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   final double totalValue;
+  final double incommingValue;
+  final double dispenseValue;
   final Function changeTabCallback;
 
   const TopBar({
     super.key,
     required this.totalValue,
+    required this.incommingValue,
+    required this.dispenseValue,
     required this.changeTabCallback,
   });
 
@@ -27,13 +31,27 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
           child: Text('$totalValue'),
         ),
       ]),
-      actions: const [
-        IconButton(
-            onPressed: null,
-            icon: Icon(
-              Icons.settings,
-              size: 34,
-            )),
+      actions: [
+        Row(
+          children: [
+            const Icon(
+              Icons.arrow_upward,
+              color: Colors.green,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Text('$incommingValue'),
+            ),
+            const Icon(
+              Icons.arrow_downward,
+              color: Colors.red,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Text('$dispenseValue'),
+            )
+          ],
+        )
       ],
       bottom: TopbarTabBar(changeTabCallback: changeTabCallback),
     );
