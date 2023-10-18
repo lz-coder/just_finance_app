@@ -7,6 +7,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Just Finance',
       theme: ThemeData(colorScheme: const ColorScheme.dark()),
       home: const DefaultTabController(

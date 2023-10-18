@@ -5,6 +5,6 @@ class HomePageGraphics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Icon(Icons.pie_chart);
+    return const Center(child: CircularProgressIndicator());
   }
 }
