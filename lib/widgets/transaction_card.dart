@@ -27,30 +27,17 @@ class TransactionCard extends StatelessWidget {
             : const Color.fromARGB(204, 83, 117, 76),
       ),
       child: ListTile(
-        leading: Text('\$ ${transaction.value}'),
+        titleAlignment: ListTileTitleAlignment.center,
         title: Text(transaction.title),
         subtitle: Text(transaction.categorieName),
-        trailing: GestureDetector(
-          onTap: () => dialogCallback(
-            updater,
-            transaction.incomming == 0 ? false : true,
-            transaction,
-          ),
-          child: SizedBox(
-            height: 40,
-            width: 42,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadiusDirectional.circular(10),
-                color: const Color.fromARGB(141, 255, 255, 255),
-              ),
-              child: const Icon(
-                Icons.edit,
-                size: 28,
-                color: Color.fromARGB(255, 153, 75, 30),
-              ),
-            ),
-          ),
+        trailing: Text(
+          '\$ ${transaction.value}',
+          style: const TextStyle(fontSize: 18),
+        ),
+        onTap: () => dialogCallback(
+          updater,
+          transaction.incomming == 0 ? false : true,
+          transaction,
         ),
       ),
     );
