@@ -26,6 +26,7 @@ class CoreDatabase {
             incomming INTEGER,
             value REAL,
             categorie INTEGER,
+            categorieName TEXT,
             FOREIGN KEY(categorie) REFERENCES categories(id)
             );''',
         );
@@ -75,6 +76,7 @@ class CoreDatabase {
         incomming: maps[index]['incomming'],
         value: maps[index]['value'],
         categorie: maps[index]['categorie'],
+        categorieName: maps[index]['categorieName'],
       );
     });
   }
