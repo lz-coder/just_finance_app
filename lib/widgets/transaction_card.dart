@@ -29,17 +29,7 @@ class TransactionCard extends StatelessWidget {
       child: ListTile(
         leading: Text('\$ ${transaction.value}'),
         title: Text(transaction.title),
-        subtitle: FutureBuilder(
-          future: coreDatabase.getCategorieById(transaction.categorie),
-          builder: (context, snapshot) {
-            debugPrint('${snapshot.data}');
-            if (snapshot.hasData) {
-              return Text(snapshot.data != null ? snapshot.data!.name : '');
-            } else {
-              return const Text('');
-            }
-          },
-        ),
+        subtitle: Text(transaction.categorieName),
         trailing: GestureDetector(
           onTap: () => dialogCallback(
             updater,
