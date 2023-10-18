@@ -19,6 +19,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var onHomeTab = true;
   double walletValue = 0;
+  double incommingValue = 0;
+  double dispenseValue = 0;
 
   changeOnHomeTab(bool value) {
     setState(() {
@@ -28,13 +30,7 @@ class _HomePageState extends State<HomePage> {
 
   insertTransaction(TransactionInfo transaction) async {
     await coreDatabase.insertTransaction(transaction);
-    setState(() {
-      if (transaction.incomming == 1) {
-        walletValue += transaction.value;
-      } else {
-        walletValue -= transaction.value;
-      }
-    });
+    updateWalletValue();
   }
 
   updateTransaction(TransactionInfo transaction) async {
@@ -49,16 +45,22 @@ class _HomePageState extends State<HomePage> {
 
   updateWalletValue() async {
     var transactions = await coreDatabase.transactionsList();
-    double value = 0;
+    double newWalletValue = 0;
+    double newIncommingValue = 0;
+    double newDispenseValue = 0;
     for (var transaction in transactions) {
       if (transaction.incomming == 1) {
-        value += transaction.value;
+        newWalletValue += transaction.value;
+        newIncommingValue += transaction.value;
       } else {
-        value -= transaction.value;
+        newWalletValue -= transaction.value;
+        newDispenseValue += transaction.value;
       }
     }
     setState(() {
-      walletValue = value;
+      walletValue = newWalletValue;
+      incommingValue = newIncommingValue;
+      dispenseValue = newDispenseValue;
     });
   }
 
@@ -99,8 +101,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          TopBar(totalValue: walletValue, changeTabCallback: changeOnHomeTab),
+      appBar: TopBar(
+          totalValue: walletValue,
+          incommingValue: incommingValue,
+          dispenseValue: dispenseValue,
+          changeTabCallback: changeOnHomeTab),
       floatingActionButton: onHomeTab
           ? Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -124,7 +129,7 @@ class _HomePageState extends State<HomePage> {
             )
           : null,
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.only(left: 10, right: 10, top: 4),
         child: TabBarView(
           physics: const NeverScrollableScrollPhysics(),
           children: [
@@ -133,7 +138,7 @@ class _HomePageState extends State<HomePage> {
               transactionUpdater: updateTransaction,
               updateDialogCallback: _showEditTransactionDialog,
             ),
-            HomePageGraphics(),
+            const HomePageGraphics(),
           ],
         ),
       ),
