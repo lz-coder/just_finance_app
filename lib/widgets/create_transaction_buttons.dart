@@ -14,7 +14,7 @@ class CreateTransactionButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         SizedBox(
-          height: 46,
+          height: 54,
           child: FloatingActionButton(
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
@@ -29,12 +29,13 @@ class CreateTransactionButtons extends StatelessWidget {
         ),
         SizedBox(
           height: 64,
+          width: 64,
           child: FloatingActionButton(
             backgroundColor: const Color.fromARGB(255, 94, 216, 94),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                topLeft: Radius.circular(10),
+                bottomLeft: Radius.circular(8),
+                topLeft: Radius.circular(8),
                 bottomRight: Radius.circular(10),
                 topRight: Radius.circular(10),
               ),
