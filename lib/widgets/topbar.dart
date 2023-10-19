@@ -20,37 +20,51 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Row(children: [
-        Icon(
-          Icons.monetization_on_outlined,
-          size: 32,
-          color: totalValue >= 0 ? Colors.green : Colors.red,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 5),
-          child: Text('$totalValue'),
-        ),
-      ]),
+      title: Row(
+        children: [
+          Icon(
+            Icons.monetization_on_outlined,
+            size: 32,
+            color: totalValue >= 0 ? Colors.green : Colors.red,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 5, right: 20),
+            child: Text('$totalValue'),
+          ),
+          Row(
+            children: [
+              const Icon(
+                Icons.arrow_upward,
+                color: Colors.green,
+                size: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Text(
+                  '$incommingValue',
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+              const Icon(
+                Icons.arrow_downward,
+                color: Colors.red,
+                size: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Text(
+                  '$dispenseValue',
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
       actions: [
-        Row(
-          children: [
-            const Icon(
-              Icons.arrow_upward,
-              color: Colors.green,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text('$incommingValue'),
-            ),
-            const Icon(
-              Icons.arrow_downward,
-              color: Colors.red,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text('$dispenseValue'),
-            )
-          ],
+        Icon(
+          Icons.settings,
+          size: 34,
         )
       ],
       bottom: TopbarTabBar(changeTabCallback: changeTabCallback),
