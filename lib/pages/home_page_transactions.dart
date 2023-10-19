@@ -24,7 +24,7 @@ class HomePageTransactions extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return ListView.builder(
-            padding: const EdgeInsets.only(bottom: 80),
+            padding: const EdgeInsets.only(bottom: 90),
             itemCount: snapshot.data!.length >= _viewCount
                 ? _viewCount
                 : snapshot.data!.length,
