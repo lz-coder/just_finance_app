@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_finance_app/pages/home_page_graphics.dart';
 import 'package:just_finance_app/pages/home_page_transactions.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
+import 'package:just_finance_app/widgets/create_transaction_buttons.dart';
 import 'package:just_finance_app/widgets/topbar.dart';
 import 'package:just_finance_app/widgets/transaction_dialog.dart';
 
@@ -107,26 +108,7 @@ class _HomePageState extends State<HomePage> {
           dispenseValue: dispenseValue,
           changeTabCallback: changeOnHomeTab),
       floatingActionButton: onHomeTab
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SizedBox(
-                  height: 46,
-                  child: FloatingActionButton(
-                    backgroundColor: const Color.fromARGB(255, 216, 94, 94),
-                    onPressed: () => _showTransactionDialog(false),
-                    child: const Icon(Icons.remove),
-                  ),
-                ),
-                FloatingActionButton(
-                  backgroundColor: const Color.fromARGB(255, 94, 216, 94),
-                  onPressed: () async {
-                    _showTransactionDialog(true);
-                  },
-                  child: const Icon(Icons.add),
-                ),
-              ],
-            )
+          ? CreateTransactionButtons(dialogCallback: _showTransactionDialog)
           : null,
       body: Padding(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 4),
