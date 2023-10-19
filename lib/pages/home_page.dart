@@ -120,7 +120,10 @@ class _HomePageState extends State<HomePage> {
               transactionUpdater: updateTransaction,
               updateDialogCallback: _showEditTransactionDialog,
             ),
-            const HomePageGraphics(),
+            HomePageGraphics(
+              incommingValue: incommingValue,
+              dispenseValue: dispenseValue,
+            ),
           ],
         ),
       ),
