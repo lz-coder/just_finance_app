@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:just_finance_app/Repository/wallet_repository.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomePageGraphics extends StatelessWidget {
   const HomePageGraphics({
     super.key,
-    required this.incommingValue,
-    required this.dispenseValue,
   });
-  final double incommingValue;
-  final double dispenseValue;
 
   @override
   Widget build(BuildContext context) {
+    final incommingValue =
+        Provider.of<WalletRepository>(context).walletIncommingValue;
+    final dispenseValue =
+        Provider.of<WalletRepository>(context).walletDispenseValue;
     final pieData = <_PieData>[
       _PieData('Ganhos', incommingValue, "Ganhos"),
       _PieData('Despesas', dispenseValue, "Despesas"),

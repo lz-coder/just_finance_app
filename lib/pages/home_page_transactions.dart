@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:just_finance_app/Repository/wallet_repository.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/widgets/transaction_card.dart';
+import 'package:provider/provider.dart';
 
 final coreDatabase = CoreDatabase();
 
 class HomePageTransactions extends StatelessWidget {
-  final Function dismissCallback;
-  final Function transactionUpdater;
   final Function updateDialogCallback;
   final _viewCount = 30;
 
   const HomePageTransactions({
     super.key,
-    required this.dismissCallback,
-    required this.transactionUpdater,
     required this.updateDialogCallback,
   });
 
@@ -36,7 +34,8 @@ class HomePageTransactions extends StatelessWidget {
                 key: UniqueKey(),
                 direction: DismissDirection.endToStart,
                 onDismissed: (direction) async {
-                  await dismissCallback(transaction);
+                  await Provider.of<WalletRepository>(context, listen: false)
+                      .removeTransaction(transaction);
                   snapshot.data!.remove(transaction);
                 },
                 background: const DecoratedBox(
@@ -54,7 +53,6 @@ class HomePageTransactions extends StatelessWidget {
                 ),
                 child: TransactionCard(
                   transaction: transaction,
-                  updater: transactionUpdater,
                   dialogCallback: updateDialogCallback,
                 ),
               );

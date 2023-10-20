@@ -6,13 +6,11 @@ final coreDatabase = CoreDatabase();
 
 class TransactionCard extends StatelessWidget {
   final TransactionInfo transaction;
-  final Function updater;
   final Function dialogCallback;
 
   const TransactionCard({
     super.key,
     required this.transaction,
-    required this.updater,
     required this.dialogCallback,
   });
 
@@ -35,7 +33,6 @@ class TransactionCard extends StatelessWidget {
           style: const TextStyle(fontSize: 18),
         ),
         onTap: () => dialogCallback(
-          updater,
           transaction.incomming == 0 ? false : true,
           transaction,
         ),

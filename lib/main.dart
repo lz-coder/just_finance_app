@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:just_finance_app/Repository/wallet_repository.dart';
 import 'package:just_finance_app/main_app.dart';
 import 'package:just_finance_app/src/categorie.dart';
+import 'package:provider/provider.dart';
 
 import 'db/database.dart';
 
@@ -18,5 +20,8 @@ void main() async {
   coreDatabase.insertCategorie(
       Categorie(id: 3, name: 'Gastos pessoais', type: CategorieTypes.dispense));
 
-  runApp(const MainApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => WalletRepository(),
+    child: const MainApp(),
+  ));
 }

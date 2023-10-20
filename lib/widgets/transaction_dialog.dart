@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:just_finance_app/Repository/wallet_repository.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/src/categorie.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
+import 'package:provider/provider.dart';
 
 var coreDatabase = CoreDatabase();
 
 class TransactionDialog extends StatefulWidget {
-  final Function insertCallback;
   final bool incomming;
   final TransactionInfo? transaction;
 
   const TransactionDialog({
     super.key,
-    required this.insertCallback,
     required this.incomming,
     this.transaction,
   });
@@ -138,7 +138,10 @@ class _TransactionDialogState extends State<TransactionDialog> {
                               ? selectedCategorie!.name
                               : preSelectedCategorie!.name,
                         );
-                        await widget.insertCallback(transaction);
+                        // ignore: use_build_context_synchronously
+                        await Provider.of<WalletRepository>(context,
+                                listen: false)
+                            .insertTransaction(transaction);
                       } else {
                         widget.transaction!.title = titleController.text;
                         widget.transaction!.value =
@@ -146,7 +149,9 @@ class _TransactionDialogState extends State<TransactionDialog> {
                         widget.transaction!.categorie = selectedCategorie!.id;
                         widget.transaction!.categorieName =
                             selectedCategorie!.name;
-                        await widget.insertCallback(widget.transaction);
+                        await Provider.of<WalletRepository>(context,
+                                listen: false)
+                            .updateTransaction(widget.transaction!);
                       }
                       if (context.mounted) Navigator.of(context).pop();
                     } catch (err) {
