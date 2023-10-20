@@ -4,6 +4,7 @@ import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/src/categorie.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 var coreDatabase = CoreDatabase();
 
@@ -54,8 +55,8 @@ class _TransactionDialogState extends State<TransactionDialog> {
           children: [
             Text(
               widget.transaction != null
-                  ? 'Edit Transaction'
-                  : 'New Transaction',
+                  ? AppLocalizations.of(context)!.transactionCardEditing
+                  : AppLocalizations.of(context)!.transactionCardNew,
               style: const TextStyle(fontSize: 18),
             ),
             TextField(
@@ -126,7 +127,9 @@ class _TransactionDialogState extends State<TransactionDialog> {
                           id: lastTransactionId,
                           title: titleController.text.isNotEmpty
                               ? titleController.text
-                              : 'New transaction',
+                              // ignore: use_build_context_synchronously
+                              : AppLocalizations.of(context)!
+                                  .transactionCardNew,
                           incomming: widget.incomming ? 1 : 0,
                           value: valueController.text.isNotEmpty
                               ? double.parse(valueController.text)

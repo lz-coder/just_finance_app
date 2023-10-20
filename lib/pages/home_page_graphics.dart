@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_finance_app/Repository/wallet_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePageGraphics extends StatelessWidget {
   const HomePageGraphics({
@@ -15,13 +16,15 @@ class HomePageGraphics extends StatelessWidget {
     final dispenseValue =
         Provider.of<WalletRepository>(context).walletDispenseValue;
     final pieData = <_PieData>[
-      _PieData('Ganhos', incommingValue, "Ganhos"),
-      _PieData('Despesas', dispenseValue, "Despesas"),
+      _PieData(AppLocalizations.of(context)!.transactionIncomming,
+          incommingValue, AppLocalizations.of(context)!.transactionIncomming),
+      _PieData(AppLocalizations.of(context)!.transactionDispense, dispenseValue,
+          AppLocalizations.of(context)!.transactionDispense),
     ];
     if (incommingValue > 0 || dispenseValue > 0) {
       return Center(
         child: SfCircularChart(
-          title: ChartTitle(text: 'Gráfico geral'),
+          title: ChartTitle(text: AppLocalizations.of(context)!.mainGraphTitle),
           legend: const Legend(isVisible: true),
           palette: const [
             Color.fromARGB(204, 83, 117, 76),
@@ -29,7 +32,7 @@ class HomePageGraphics extends StatelessWidget {
           ],
           series: <PieSeries<_PieData, String>>[
             PieSeries<_PieData, String>(
-              animationDuration: 750,
+              animationDuration: 700,
               explode: false,
               explodeIndex: 0,
               dataSource: pieData,
@@ -39,6 +42,7 @@ class HomePageGraphics extends StatelessWidget {
                   '${data.text} \n \$\$ ${data.yData}',
               dataLabelSettings: const DataLabelSettings(
                 isVisible: true,
+                showZeroValue: false,
                 textStyle: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
