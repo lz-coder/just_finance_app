@@ -1,0 +1,14 @@
+{
+    "@@locale": "pt_BR",
+
+    "configPageTitle": "Configurações",
+    "mainGraphTitle": "Gŕafico Geral",
+    "transactionIncomming": "Ganhos",
+    "transactionDispense": "Perdas",
+    "defaultCategorieBills": "Contas",
+    "defaultCategoriePersonalExpenses": "Despesas Pessoais",
+    "defaultCategorieSalary": "Salário",
+    "defaultCategorieExtra": "Extra",
+    "transactionCardNew": "Nova Transação",
+    "transactionCardEditing": "Editar Transação"
+}

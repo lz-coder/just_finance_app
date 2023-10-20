@@ -1,0 +1,19 @@
+{
+    "@@locale": "en",
+
+    "configPageTitle": "Settings",
+    "@configPageTitle": {
+        "description": "Title of settings page on Appbar"
+    },
+    "mainGraphTitle": "Main Graph",
+    "transactionIncomming": "Incomming",
+    "transactionDispense": "Dispense",
+    "defaultCategorieBills": "Bills",
+    "defaultCategoriePersonalExpenses": "personal expenses",
+    "defaultCategorieSalary": "Salary",
+    "defaultCategorieExtra": "Extra",
+    "transactionCardNew": "New Transaction",
+    "transactionCardEditing": "Edit Transaction"
+
+
+}
