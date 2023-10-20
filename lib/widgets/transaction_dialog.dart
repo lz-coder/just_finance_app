@@ -61,12 +61,16 @@ class _TransactionDialogState extends State<TransactionDialog> {
             ),
             TextField(
               controller: titleController,
-              decoration: const InputDecoration(label: Text('Title')),
+              decoration: InputDecoration(
+                  label: Text(AppLocalizations.of(context)!
+                      .transactionDialogTitleLabel)),
             ),
             TextField(
               keyboardType: TextInputType.number,
               controller: valueController,
-              decoration: const InputDecoration(label: Text('Value')),
+              decoration: InputDecoration(
+                  label: Text(AppLocalizations.of(context)!
+                      .transactionDialogValueLabel)),
             ),
             FutureBuilder(
               future: widget.incomming
@@ -96,7 +100,8 @@ class _TransactionDialogState extends State<TransactionDialog> {
                     width: 200,
                     initialSelection: preSelectedCategorie ?? selectedCategorie,
                     controller: categoriesController,
-                    label: const Text('Categorie'),
+                    label: Text(AppLocalizations.of(context)!
+                        .transactionDialogCategorieLabel),
                     dropdownMenuEntries: categorieEntries,
                     onSelected: (Categorie? categorie) {
                       setState(() {
@@ -161,11 +166,14 @@ class _TransactionDialogState extends State<TransactionDialog> {
                       debugPrint('error: ${err.toString()}');
                     }
                   },
-                  child: Text(widget.transaction == null ? 'Add' : 'update'),
+                  child: Text(widget.transaction == null
+                      ? AppLocalizations.of(context)!.transactionDialogAddLabel
+                      : MaterialLocalizations.of(context).saveButtonLabel),
                 ),
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Cancel'),
+                  child:
+                      Text(MaterialLocalizations.of(context).cancelButtonLabel),
                 ),
               ],
             ),

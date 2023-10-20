@@ -10,5 +10,9 @@
     "defaultCategorieSalary": "Salário",
     "defaultCategorieExtra": "Extra",
     "transactionCardNew": "Nova Transação",
-    "transactionCardEditing": "Editar Transação"
+    "transactionCardEditing": "Editar Transação",
+    "transactionDialogAddLabel": "Adicionar",
+    "transactionDialogTitleLabel": "Título",
+    "transactionDialogValueLabel": "Valor",
+    "transactionDialogCategorieLabel": "Categoria"
 }
