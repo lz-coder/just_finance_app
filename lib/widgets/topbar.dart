@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_finance_app/pages/config_page.dart';
 import 'package:just_finance_app/widgets/topbar_tabbar.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
@@ -31,40 +32,19 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
             padding: const EdgeInsets.only(left: 5, right: 20),
             child: Text('$totalValue'),
           ),
-          Row(
-            children: [
-              const Icon(
-                Icons.arrow_upward,
-                color: Colors.green,
-                size: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Text(
-                  '$incommingValue',
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ),
-              const Icon(
-                Icons.arrow_downward,
-                color: Colors.red,
-                size: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Text(
-                  '$dispenseValue',
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ),
-            ],
-          )
         ],
       ),
       actions: [
-        Icon(
-          Icons.settings,
-          size: 34,
+        GestureDetector(
+          onTap: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const ConfigPage())),
+          child: const Padding(
+            padding: EdgeInsets.only(right: 5),
+            child: Icon(
+              Icons.settings,
+              size: 34,
+            ),
+          ),
         )
       ],
       bottom: TopbarTabBar(changeTabCallback: changeTabCallback),
