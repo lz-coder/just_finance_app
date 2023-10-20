@@ -37,12 +37,14 @@ class CoreDatabase {
 
   CoreDatabase();
 
-  Future<void> insertTransaction(TransactionInfo transaction) async {
+  Future<void> insertTransaction(TransactionInfo transaction,
+      {replace = true}) async {
     final db = await _db;
     await db.insert(
       transactionsTable,
       transaction.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
+      conflictAlgorithm:
+          replace ? ConflictAlgorithm.replace : ConflictAlgorithm.ignore,
     );
   }
 
