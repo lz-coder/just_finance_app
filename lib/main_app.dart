@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:just_finance_app/Repository/config_repository.dart';
 import 'package:just_finance_app/pages/home_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:just_finance_app/src/categorie.dart';
 import 'package:just_finance_app/db/database.dart';
+import 'package:provider/provider.dart';
 
 final coreDatabase = CoreDatabase();
 
@@ -17,6 +19,7 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(colorScheme: const ColorScheme.dark()),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      locale: Provider.of<ConfigRepository>(context).currentLocale,
       home: DefaultTabController(
         length: 2,
         child: Builder(builder: (context) {
