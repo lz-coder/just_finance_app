@@ -1,13 +1,13 @@
 class Categorie {
-  final int id;
-  String name;
-  final String type;
-
   Categorie({
     required this.id,
     required this.name,
     required this.type,
   });
+
+  final int id;
+  String name;
+  final String type;
 
   Map<String, dynamic> toMap() {
     return {
