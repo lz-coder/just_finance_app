@@ -104,9 +104,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                         .transactionDialogCategorieLabel),
                     dropdownMenuEntries: categorieEntries,
                     onSelected: (Categorie? categorie) {
-                      setState(() {
-                        selectedCategorie = categorie;
-                      });
+                      selectedCategorie = categorie;
                     },
                   );
                 }
