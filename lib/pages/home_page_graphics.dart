@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_finance_app/Repository/wallet_repository.dart';
+import 'package:just_finance_app/src/core_functions.dart';
+import 'package:just_finance_app/src/currency.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -39,7 +41,7 @@ class HomePageGraphics extends StatelessWidget {
               xValueMapper: (_PieData data, _) => data.xData,
               yValueMapper: (_PieData data, _) => data.yData,
               dataLabelMapper: (_PieData data, _) =>
-                  '${data.text} \n \$\$ ${data.yData}',
+                  '${data.text} \n ${Currency(locale: getCurrentLocale(context)).show(data.yData)}',
               dataLabelSettings: const DataLabelSettings(
                 isVisible: true,
                 showZeroValue: false,
@@ -53,10 +55,10 @@ class HomePageGraphics extends StatelessWidget {
         ),
       );
     } else {
-      return const Center(
+      return Center(
         child: Text(
-          'Sem dados para calcular',
-          style: TextStyle(fontSize: 20),
+          AppLocalizations.of(context)!.graphPageNoData,
+          style: const TextStyle(fontSize: 20),
         ),
       );
     }

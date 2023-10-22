@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_finance_app/db/database.dart';
+import 'package:just_finance_app/src/core_functions.dart';
+import 'package:just_finance_app/src/currency.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
 
 final coreDatabase = CoreDatabase();
@@ -29,7 +31,7 @@ class TransactionCard extends StatelessWidget {
         title: Text(transaction.title),
         subtitle: Text(transaction.categorieName),
         trailing: Text(
-          '\$ ${transaction.value}',
+          Currency(locale: getCurrentLocale(context)).show(transaction.value),
           style: const TextStyle(fontSize: 18),
         ),
         onTap: () => dialogCallback(
