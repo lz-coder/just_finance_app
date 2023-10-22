@@ -3,21 +3,26 @@
 
     "configPageTitle": "Settings",
     "@configPageTitle": {
-        "description": "Title of settings page on Appbar"
+        "description": "Title of the settings page on the app bar"
     },
     "mainGraphTitle": "Main Graph",
-    "transactionIncomming": "Incomming",
-    "transactionDispense": "Dispense",
+    "graphPageNoData": "Insufficient data...",
+    
+    "transactionIncomming": "Income",
+    "transactionDispense": "Expense",
+    
     "defaultCategorieBills": "Bills",
-    "defaultCategoriePersonalExpenses": "personal expenses",
+    "defaultCategoriePersonalExpenses": "Personal Expenses",
     "defaultCategorieSalary": "Salary",
     "defaultCategorieExtra": "Extra",
+    
     "transactionCardNew": "New Transaction",
     "transactionCardEditing": "Edit Transaction",
     "transactionDialogAddLabel": "Add",
     "transactionDialogTitleLabel": "Title",
     "transactionDialogValueLabel": "Value",
-    "transactionDialogCategorieLabel": "Categorie"
-
-
+    "transactionDialogCategorieLabel": "Category",
+    
+    "configLanguageLabel": "Language"
+    
 }

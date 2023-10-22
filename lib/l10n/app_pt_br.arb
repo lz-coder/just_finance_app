@@ -2,17 +2,27 @@
     "@@locale": "pt_BR",
 
     "configPageTitle": "Configurações",
-    "mainGraphTitle": "Gŕafico Geral",
-    "transactionIncomming": "Ganhos",
-    "transactionDispense": "Perdas",
+    "@configPageTitle": {
+        "description": "Título da página de configurações na barra de aplicativos"
+    },
+    "mainGraphTitle": "Gráfico Principal",
+    "graphPageNoData": "Dados insuficientes...",
+
+    "transactionIncomming": "Receita",
+    "transactionDispense": "Despesa",
+
     "defaultCategorieBills": "Contas",
-    "defaultCategoriePersonalExpenses": "Despesas Pessoais",
+    "defaultCategoriePersonalExpenses": "Despesas pessoais",
     "defaultCategorieSalary": "Salário",
     "defaultCategorieExtra": "Extra",
+
     "transactionCardNew": "Nova Transação",
     "transactionCardEditing": "Editar Transação",
     "transactionDialogAddLabel": "Adicionar",
     "transactionDialogTitleLabel": "Título",
     "transactionDialogValueLabel": "Valor",
-    "transactionDialogCategorieLabel": "Categoria"
+    "transactionDialogCategorieLabel": "Categoria",
+
+    "configLanguageLabel": "Idioma"
+
 }
