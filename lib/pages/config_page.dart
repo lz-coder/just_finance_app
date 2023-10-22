@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:just_finance_app/Repository/config_repository.dart';
+import 'package:just_finance_app/db/database.dart';
 import 'package:provider/provider.dart';
+
+final coreDatabase = CoreDatabase();
 
 class ConfigPage extends StatefulWidget {
   const ConfigPage({super.key});
@@ -28,6 +31,8 @@ class ConfigPageState extends State<ConfigPage> {
       "label": "Português Portugal",
     }
   ];
+
+  final configController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -64,19 +69,25 @@ class ConfigPageState extends State<ConfigPage> {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.only(left: 30, top: 20, right: 20),
         child: Column(
           children: [
             Row(
               children: [
-                Text('Idioma'),
-                Spacer(),
+                Text(
+                  AppLocalizations.of(context)!.configLanguageLabel,
+                  style: const TextStyle(fontSize: 20),
+                ),
+                const Spacer(),
                 DropdownMenu<Locale>(
+                  controller: configController,
                   dropdownMenuEntries: localesEntries,
                   initialSelection: currentLocale,
                   onSelected: (value) {
                     Provider.of<ConfigRepository>(context, listen: false)
-                        .currentLocale = value;
+                        .changeCurrentLocale(value);
+                    //await coreDatabase.updateConfig('locale_config',
+                    //'${value!.languageCode}_${value.countryCode}');
                   },
                 )
               ],
