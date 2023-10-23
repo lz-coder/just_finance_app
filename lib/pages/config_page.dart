@@ -10,10 +10,10 @@ class ConfigPage extends StatefulWidget {
   const ConfigPage({super.key});
 
   @override
-  State<ConfigPage> createState() => ConfigPageState();
+  State<ConfigPage> createState() => _ConfigPageState();
 }
 
-class ConfigPageState extends State<ConfigPage> {
+class _ConfigPageState extends State<ConfigPage> {
   final List<Map<String, dynamic>> _localesMap = [
     {
       "code": "en",
