@@ -172,6 +172,16 @@ class CoreDatabase {
     );
   }
 
+  Future<void> updateCategorie(Categorie categorie) async {
+    final db = await _db;
+    await db.update(
+      _categoriesTable,
+      categorie.toMap(),
+      where: 'id = ?',
+      whereArgs: [categorie.id],
+    );
+  }
+
   //Configs//
   Future<void> insertConfig(Config config) async {
     final db = await _db;
