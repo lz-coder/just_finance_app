@@ -7,7 +7,7 @@ class Categorie {
 
   final int id;
   String name;
-  final String type;
+  String type;
 
   Map<String, dynamic> toMap() {
     return {
