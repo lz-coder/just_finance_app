@@ -15,13 +15,32 @@ class CategoriesEditor extends StatefulWidget {
 }
 
 class _CategoriesEditorState extends State<CategoriesEditor> {
-  void _showCategorieDialog({Categorie? categorie}) {
+  void _showCategorieDialog({Categorie? categorie, bool update = false}) {
     showDialog(
       context: context,
       builder: (context) {
-        return CategorieDialog(categorie: categorie);
+        late Function action;
+        if (update) {
+          action = _updateCategorie;
+        } else {
+          action = _insertCategorie;
+        }
+        return CategorieDialog(
+          categorie: categorie,
+          actionCallback: action,
+        );
       },
     );
+  }
+
+  Future<void> _updateCategorie(Categorie categorie) async {
+    await coreDatabase.updateCategorie(categorie);
+    setState(() {});
+  }
+
+  Future<void> _insertCategorie(Categorie categorie) async {
+    await coreDatabase.insertCategorie(categorie);
+    setState(() {});
   }
 
   @override
