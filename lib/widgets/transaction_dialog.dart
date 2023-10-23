@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_finance_app/Repository/wallet_repository.dart';
 import 'package:just_finance_app/db/database.dart';
+import 'package:just_finance_app/pages/categories_editor_page.dart';
 import 'package:just_finance_app/src/categorie.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
 import 'package:provider/provider.dart';
@@ -96,16 +97,37 @@ class _TransactionDialogState extends State<TransactionDialog> {
                     preSelectedCategorie = snapshot.data![0];
                   }
 
-                  return DropdownMenu<Categorie>(
-                    width: 200,
-                    initialSelection: preSelectedCategorie ?? selectedCategorie,
-                    controller: categoriesController,
-                    label: Text(AppLocalizations.of(context)!
-                        .transactionDialogCategorieLabel),
-                    dropdownMenuEntries: categorieEntries,
-                    onSelected: (Categorie? categorie) {
-                      selectedCategorie = categorie;
-                    },
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      DropdownMenu<Categorie>(
+                        width: 220,
+                        initialSelection:
+                            preSelectedCategorie ?? selectedCategorie,
+                        controller: categoriesController,
+                        label: Text(AppLocalizations.of(context)!
+                            .transactionDialogCategorieLabel),
+                        dropdownMenuEntries: categorieEntries,
+                        onSelected: (Categorie? categorie) {
+                          selectedCategorie = categorie;
+                        },
+                      ),
+                      SizedBox(
+                        width: 64,
+                        height: 48,
+                        child: OutlinedButton(
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const CategoriesEditor())),
+                          child: const Icon(
+                            Icons.edit,
+                            size: 28,
+                          ),
+                        ),
+                      )
+                    ],
                   );
                 }
                 return const CircularProgressIndicator();
