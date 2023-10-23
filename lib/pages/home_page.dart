@@ -33,12 +33,11 @@ class _HomePageState extends State<HomePage> {
 
   void _showTransactionDialog(bool incomming) {
     showDialog(
-        context: context,
-        builder: (context) {
-          return TransactionDialog(
-            incomming: incomming,
-          );
-        });
+      context: context,
+      builder: (context) {
+        return TransactionDialog(incomming: incomming);
+      },
+    );
   }
 
   void _showEditTransactionDialog(
