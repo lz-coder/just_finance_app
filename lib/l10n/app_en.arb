@@ -23,6 +23,15 @@
     "transactionDialogValueLabel": "Value",
     "transactionDialogCategorieLabel": "Category",
     
-    "configLanguageLabel": "Language"
+    "configLanguageLabel": "Language",
+
+    "categoriesEditorTitle": "Categories Editor",
+
+    "categoriesDialogNameField": "Category Name",
+    "categoriesDialogTitleNew": "New Category",
+    "categoriesDialogTitleEdit": "Edit Category",
+
+    "categorieTypeIncome": "Income",
+    "categorieTypeExpense": "Expense"
     
 }
