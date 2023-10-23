@@ -103,6 +103,19 @@ class CoreDatabase {
 
   //Categories//
 
+  Future<List<Categorie>> categoriesList() async {
+    final db = await _db;
+    final List<Map<String, dynamic>> maps = await db.query(_categoriesTable);
+
+    return List.generate(maps.length, (index) {
+      return Categorie(
+        id: maps[index]['id'],
+        name: maps[index]['name'],
+        type: maps[index]['type'],
+      );
+    });
+  }
+
   Future<List<Categorie>> incommingCategories() async {
     final db = await _db;
     final List<Map<String, dynamic>> maps = await db.query(
