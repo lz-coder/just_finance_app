@@ -27,8 +27,8 @@ class _TransactionDialogState extends State<TransactionDialog> {
   final valueController = TextEditingController();
   final titleController = TextEditingController();
   final categoriesController = TextEditingController();
-  Category? selectedCategorie;
-  Category? preSelectedCategorie;
+  Category? selectedCategory;
+  Category? preSelectedCategory;
 
   void closeDialog(BuildContext context) {
     Navigator.of(context).pop();
@@ -86,15 +86,15 @@ class _TransactionDialogState extends State<TransactionDialog> {
                         value: categorie, label: categorie.name));
                   }
 
-                  if (widget.transaction != null && selectedCategorie == null) {
-                    for (Category categorie in snapshot.data!) {
-                      if (categorie.id == widget.transaction!.categorie) {
-                        selectedCategorie = categorie;
+                  if (widget.transaction != null && selectedCategory == null) {
+                    for (Category category in snapshot.data!) {
+                      if (category.id == widget.transaction!.category) {
+                        selectedCategory = category;
                       }
                     }
                   } else if (widget.transaction == null &&
-                      selectedCategorie == null) {
-                    preSelectedCategorie = snapshot.data![0];
+                      selectedCategory == null) {
+                    preSelectedCategory = snapshot.data![0];
                   }
 
                   return Row(
@@ -103,13 +103,13 @@ class _TransactionDialogState extends State<TransactionDialog> {
                       DropdownMenu<Category>(
                         width: 220,
                         initialSelection:
-                            preSelectedCategorie ?? selectedCategorie,
+                            preSelectedCategory ?? selectedCategory,
                         controller: categoriesController,
                         label: Text(AppLocalizations.of(context)!
                             .transactionDialogCategorieLabel),
                         dropdownMenuEntries: categoryEntries,
                         onSelected: (Category? categorie) {
-                          selectedCategorie = categorie;
+                          selectedCategory = categorie;
                         },
                       ),
                       SizedBox(
@@ -159,12 +159,12 @@ class _TransactionDialogState extends State<TransactionDialog> {
                           value: valueController.text.isNotEmpty
                               ? double.parse(valueController.text)
                               : 1,
-                          categorie: selectedCategorie != null
-                              ? selectedCategorie!.id
-                              : preSelectedCategorie!.id,
-                          categorieName: selectedCategorie != null
-                              ? selectedCategorie!.name
-                              : preSelectedCategorie!.name,
+                          category: selectedCategory != null
+                              ? selectedCategory!.id
+                              : preSelectedCategory!.id,
+                          categoryName: selectedCategory != null
+                              ? selectedCategory!.name
+                              : preSelectedCategory!.name,
                         );
                         // ignore: use_build_context_synchronously
                         await Provider.of<WalletRepository>(context,
@@ -174,9 +174,9 @@ class _TransactionDialogState extends State<TransactionDialog> {
                         widget.transaction!.title = titleController.text;
                         widget.transaction!.value =
                             double.parse(valueController.text);
-                        widget.transaction!.categorie = selectedCategorie!.id;
-                        widget.transaction!.categorieName =
-                            selectedCategorie!.name;
+                        widget.transaction!.category = selectedCategory!.id;
+                        widget.transaction!.categoryName =
+                            selectedCategory!.name;
                         await Provider.of<WalletRepository>(context,
                                 listen: false)
                             .updateTransaction(widget.transaction!);

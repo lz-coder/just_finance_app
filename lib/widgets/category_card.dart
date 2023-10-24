@@ -60,8 +60,7 @@ class CategoryCard extends StatelessWidget {
               const Spacer(),
               IconButton(
                 onPressed: () {
-                  print(category.id);
-                  editCallback(categorie: category, update: true);
+                  editCallback(category: category, update: true);
                 },
                 icon: const Icon(
                   Icons.edit,

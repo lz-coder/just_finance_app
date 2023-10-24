@@ -29,7 +29,7 @@ class TransactionCard extends StatelessWidget {
       child: ListTile(
         titleAlignment: ListTileTitleAlignment.center,
         title: Text(transaction.title),
-        subtitle: Text(transaction.categorieName),
+        subtitle: Text(transaction.categoryName),
         trailing: Text(
           Currency(locale: getCurrentLocale(context)).show(transaction.value),
           style: const TextStyle(fontSize: 18),

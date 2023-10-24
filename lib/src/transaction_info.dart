@@ -3,35 +3,35 @@ class TransactionInfo {
   String title;
   final int income;
   double value;
-  int categorie;
-  String categorieName;
+  int category;
+  String categoryName;
 
   TransactionInfo({
     required this.id,
     required this.title,
     required this.income,
     required this.value,
-    required this.categorie,
-    required this.categorieName,
+    required this.category,
+    required this.categoryName,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'title': title,
-      'incomming': income,
+      'income': income,
       'value': value,
-      'categorie': categorie,
-      'categorieName': categorieName,
+      'category': category,
+      'categoryName': categoryName,
     };
   }
 
   set setTitle(String value) => title = value;
   set setValue(double newValue) => value = newValue;
-  set setCategorie(int value) => categorie = value;
+  set setCategorie(int value) => category = value;
 
   @override
   String toString() {
-    return 'Transaction{id: $id, title: $title, incomming: $income, value: $value}, categorie_is: $categorie';
+    return 'Transaction{id: $id, title: $title, incomming: $income, value: $value}, categorie_is: $category';
   }
 }
