@@ -89,8 +89,8 @@ class CoreDatabase {
         title: maps[index]['title'],
         income: maps[index]['income'],
         value: maps[index]['value'],
-        categorie: maps[index]['category'],
-        categorieName: maps[index]['categoryName'],
+        category: maps[index]['category'],
+        categoryName: maps[index]['categoryName'],
       );
     });
   }
@@ -192,18 +192,22 @@ class CoreDatabase {
     );
   }
 
-  Future<Config> getConfig(String configName) async {
+  Future<Config?> getConfig(String configName) async {
     final db = await _db;
     final List<Map<String, dynamic>> map = await db.query(
       _configsTable,
       where: 'name = ?',
       whereArgs: [configName],
     );
-    return Config(
-      id: map[0]['id'],
-      name: map[0]['name'],
-      value: map[0]['value'],
-    );
+    if (map.isNotEmpty) {
+      return Config(
+        id: map[0]['id'],
+        name: map[0]['name'],
+        value: map[0]['value'],
+      );
+    } else {
+      return null;
+    }
   }
 
   Future<void> updateConfig(String configName, String value) async {
