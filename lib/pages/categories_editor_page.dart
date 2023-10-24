@@ -15,7 +15,24 @@ class CategoriesEditor extends StatefulWidget {
 }
 
 class _CategoriesEditorState extends State<CategoriesEditor> {
-  void _showCategoryDialog({Category? category, bool update = false}) {
+  Color _tabIndicatorColor = const Color.fromARGB(204, 83, 117, 76);
+  Color _buttonColor = const Color.fromARGB(204, 115, 221, 94);
+  bool _isIncome = true;
+
+  void _changeTab({
+    required Color indicatorColor,
+    required Color buttonColor,
+    required bool isIncome,
+  }) {
+    setState(() {
+      _tabIndicatorColor = indicatorColor;
+      _buttonColor = buttonColor;
+      _isIncome = isIncome;
+    });
+  }
+
+  void _showCategoryDialog(
+      {Category? category, bool update = false, bool? isIncome}) {
     showDialog(
       context: context,
       builder: (context) {
@@ -28,6 +45,7 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
         return CategoryDialog(
           category: category,
           actionCallback: action,
+          isIncome: isIncome,
         );
       },
     );
@@ -45,39 +63,101 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(),
-        title: Text(AppLocalizations.of(context)!.categoriesEditorTitle),
-        actions: [
-          IconButton(
-            onPressed: () => _showCategoryDialog(),
-            icon: const Icon(
-              Icons.add_box,
-              size: 42,
-              color: Colors.green,
-            ),
-          )
-        ],
-      ),
-      body: FutureBuilder(
-        future: coreDatabase.categoriesList(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                return CategoryCard(
-                  category: snapshot.data![index],
-                  editCallback: _showCategoryDialog,
-                );
+    return DefaultTabController(
+      length: 2,
+      child: Builder(builder: (context) {
+        return Scaffold(
+          appBar: AppBar(
+            leading: const BackButton(),
+            title: Text(AppLocalizations.of(context)!.categoriesEditorTitle),
+            actions: [
+              IconButton(
+                onPressed: () => _showCategoryDialog(),
+                icon: const Icon(
+                  Icons.add_box,
+                  size: 42,
+                  color: Colors.green,
+                ),
+              )
+            ],
+            bottom: TabBar(
+              isScrollable: false,
+              onTap: (i) {
+                switch (i) {
+                  case 0:
+                    _changeTab(
+                      indicatorColor: const Color.fromARGB(204, 83, 117, 76),
+                      buttonColor: const Color.fromARGB(204, 115, 221, 94),
+                      isIncome: true,
+                    );
+                    break;
+                  case 1:
+                    _changeTab(
+                      indicatorColor: const Color.fromARGB(204, 117, 76, 76),
+                      buttonColor: const Color.fromARGB(204, 221, 94, 94),
+                      isIncome: false,
+                    );
+                }
               },
-            );
-          } else {
-            return const CircularProgressIndicator();
-          }
-        },
-      ),
+              indicatorColor: _tabIndicatorColor,
+              indicatorWeight: 3,
+              labelColor: const Color.fromARGB(255, 231, 227, 226),
+              unselectedLabelColor: const Color.fromARGB(255, 89, 91, 94),
+              enableFeedback: false,
+              splashFactory: NoSplash.splashFactory,
+              tabs: [
+                Tab(text: AppLocalizations.of(context)!.categorieTypeIncome),
+                Tab(text: AppLocalizations.of(context)!.categorieTypeExpense),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              FutureBuilder(
+                future: coreDatabase.incomeCategories(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        return CategoryCard(
+                          category: snapshot.data![index],
+                          editCallback: _showCategoryDialog,
+                        );
+                      },
+                    );
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                },
+              ),
+              FutureBuilder(
+                future: coreDatabase.expenseCategories(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        return CategoryCard(
+                          category: snapshot.data![index],
+                          editCallback: _showCategoryDialog,
+                        );
+                      },
+                    );
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                },
+              ),
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: _buttonColor,
+            onPressed: () => _showCategoryDialog(isIncome: _isIncome),
+            child: const Icon(Icons.add),
+          ),
+        );
+      }),
     );
   }
 }
