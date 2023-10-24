@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:just_finance_app/Repository/category_repository.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/l10n/app_localizations.dart';
 import 'package:just_finance_app/src/category.dart';
-import 'package:just_finance_app/widgets/category_switch.dart';
+import 'package:provider/provider.dart';
 
 final coreDatabase = CoreDatabase();
 
@@ -27,6 +28,16 @@ class _CategorieDialogState extends State<CategoryDialog> {
 
   @override
   Widget build(BuildContext context) {
+    void addCategory(Category category) {
+      Provider.of<CategoryRepository>(context, listen: false)
+          .insertCategory(category);
+    }
+
+    void updateCategory(Category category) {
+      Provider.of<CategoryRepository>(context, listen: false)
+          .updateCategory(category);
+    }
+
     if (widget.category != null) {
       _categorieNameController.text = widget.category!.name;
     }
@@ -53,10 +64,12 @@ class _CategorieDialogState extends State<CategoryDialog> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    executor() async {
+                    void executor() async {
                       if (widget.category != null) {
                         widget.category!.name = _categorieNameController.text;
-                        await widget.actionCallback(widget.category);
+                        //await Provider.of<CategoryRepository>(context)
+                        //.insertCategory(widget.category!);
+                        updateCategory(widget.category!);
                       } else {
                         late int lastCategorieId;
                         final categoriesList =
@@ -73,7 +86,9 @@ class _CategorieDialogState extends State<CategoryDialog> {
                               ? CategoryTypes.income
                               : CategoryTypes.expense,
                         );
-                        await widget.actionCallback(category);
+                        //await Provider.of<CategoryRepository>(context)
+                        //.insertCategory(category);
+                        addCategory(category);
                       }
                     }
 
