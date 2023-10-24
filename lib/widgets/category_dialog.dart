@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/l10n/app_localizations.dart';
 import 'package:just_finance_app/src/category.dart';
+import 'package:just_finance_app/widgets/category_switch.dart';
 
 final coreDatabase = CoreDatabase();
 
@@ -10,10 +11,12 @@ class CategoryDialog extends StatefulWidget {
     super.key,
     this.category,
     required this.actionCallback,
+    this.isIncome,
   });
 
   final Category? category;
   final Function actionCallback;
+  final bool? isIncome;
 
   @override
   State<CategoryDialog> createState() => _CategorieDialogState();
@@ -21,17 +24,11 @@ class CategoryDialog extends StatefulWidget {
 
 class _CategorieDialogState extends State<CategoryDialog> {
   final _categorieNameController = TextEditingController();
-  bool isIncomeChecked = true;
-  bool? incomeCheckedSupport;
 
   @override
   Widget build(BuildContext context) {
     if (widget.category != null) {
       _categorieNameController.text = widget.category!.name;
-      isIncomeChecked =
-          incomeCheckedSupport ?? widget.category!.type == CategoryTypes.income
-              ? true
-              : false;
     }
     return Dialog(
       child: Container(
@@ -44,38 +41,12 @@ class _CategorieDialogState extends State<CategoryDialog> {
             Text(widget.category == null
                 ? AppLocalizations.of(context)!.categoriesDialogTitleNew
                 : AppLocalizations.of(context)!.categoriesDialogTitleEdit),
-            if (1 == 1)
-              TextField(
-                controller: _categorieNameController,
-                decoration: InputDecoration(
-                  label: Text(
-                      AppLocalizations.of(context)!.categoriesDialogNameField),
-                ),
+            TextField(
+              controller: _categorieNameController,
+              decoration: InputDecoration(
+                label: Text(
+                    AppLocalizations.of(context)!.categoriesDialogNameField),
               ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Switch(
-                  value: isIncomeChecked,
-                  activeColor: Colors.green,
-                  inactiveThumbColor: Colors.red,
-                  inactiveTrackColor: Colors.red,
-                  onChanged: (value) {
-                    if (widget.category != null && widget.category!.id > 3 ||
-                        widget.category == null) {
-                      setState(() {
-                        if (widget.category != null) {
-                          incomeCheckedSupport = value;
-                        }
-                        isIncomeChecked = value;
-                      });
-                    }
-                  },
-                ),
-                Text(isIncomeChecked
-                    ? AppLocalizations.of(context)!.categorieTypeIncome
-                    : AppLocalizations.of(context)!.categorieTypeExpense),
-              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -85,9 +56,6 @@ class _CategorieDialogState extends State<CategoryDialog> {
                     executor() async {
                       if (widget.category != null) {
                         widget.category!.name = _categorieNameController.text;
-                        widget.category!.type = isIncomeChecked
-                            ? CategoryTypes.income
-                            : CategoryTypes.expense;
                         await widget.actionCallback(widget.category);
                       } else {
                         late int lastCategorieId;
@@ -101,7 +69,7 @@ class _CategorieDialogState extends State<CategoryDialog> {
                         final category = Category(
                           id: lastCategorieId,
                           name: _categorieNameController.text,
-                          type: isIncomeChecked
+                          type: widget.isIncome!
                               ? CategoryTypes.income
                               : CategoryTypes.expense,
                         );
