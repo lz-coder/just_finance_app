@@ -1,36 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/l10n/app_localizations.dart';
-import 'package:just_finance_app/src/categorie.dart';
+import 'package:just_finance_app/src/category.dart';
 import 'package:just_finance_app/src/config.dart';
 
 final coreDatabase = CoreDatabase();
 
 class AppInit {
   void initializeDefaultCategories(BuildContext context) {
-    coreDatabase.insertCategorie(
-      Categorie(
+    coreDatabase.insertCategory(
+      Category(
           id: 0,
           name: AppLocalizations.of(context)!.defaultCategorieSalary,
-          type: CategorieTypes.incomming),
+          type: CategoryTypes.income),
     );
-    coreDatabase.insertCategorie(
-      Categorie(
+    coreDatabase.insertCategory(
+      Category(
           id: 1,
           name: AppLocalizations.of(context)!.defaultCategorieExtra,
-          type: CategorieTypes.incomming),
+          type: CategoryTypes.income),
     );
-    coreDatabase.insertCategorie(
-      Categorie(
+    coreDatabase.insertCategory(
+      Category(
           id: 2,
           name: AppLocalizations.of(context)!.defaultCategorieBills,
-          type: CategorieTypes.dispense),
+          type: CategoryTypes.expense),
     );
-    coreDatabase.insertCategorie(
-      Categorie(
+    coreDatabase.insertCategory(
+      Category(
           id: 3,
           name: AppLocalizations.of(context)!.defaultCategoriePersonalExpenses,
-          type: CategorieTypes.dispense),
+          type: CategoryTypes.expense),
     );
   }
 

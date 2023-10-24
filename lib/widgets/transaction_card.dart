@@ -22,7 +22,7 @@ class TransactionCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: transaction.incomming == 0
+        color: transaction.income == 0
             ? const Color.fromARGB(204, 117, 76, 76)
             : const Color.fromARGB(204, 83, 117, 76),
       ),
@@ -35,7 +35,7 @@ class TransactionCard extends StatelessWidget {
           style: const TextStyle(fontSize: 18),
         ),
         onTap: () => dialogCallback(
-          transaction.incomming == 0 ? false : true,
+          transaction.income == 0 ? false : true,
           transaction,
         ),
       ),

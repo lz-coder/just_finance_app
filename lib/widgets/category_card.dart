@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:just_finance_app/l10n/app_localizations.dart';
-import 'package:just_finance_app/src/categorie.dart';
+import 'package:just_finance_app/src/category.dart';
 
-class CategorieCard extends StatelessWidget {
-  const CategorieCard({
+class CategoryCard extends StatelessWidget {
+  const CategoryCard({
     super.key,
-    required this.categorie,
+    required this.category,
     required this.editCallback,
   });
 
-  final Categorie categorie;
+  final Category category;
 
   ///TODO: implement callback functions
   final Function editCallback;
@@ -30,15 +30,15 @@ class CategorieCard extends StatelessWidget {
         titleAlignment: ListTileTitleAlignment.center,
         style: ListTileStyle.list,
         title: Text(
-          categorie.name,
+          category.name,
           style: const TextStyle(fontSize: 18),
         ),
         subtitle: Text(
-          categorie.type == CategorieTypes.incomming
+          category.type == CategoryTypes.income
               ? AppLocalizations.of(context)!.categorieTypeIncome
               : AppLocalizations.of(context)!.categorieTypeExpense,
           style: TextStyle(
-            color: categorie.type == CategorieTypes.dispense
+            color: category.type == CategoryTypes.expense
                 ? Colors.red
                 : Colors.green,
             fontSize: 16,
@@ -49,7 +49,7 @@ class CategorieCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              if (categorie.id > 3)
+              if (category.id > 3)
                 IconButton(
                   onPressed: () => '',
                   icon: const Icon(
@@ -59,7 +59,10 @@ class CategorieCard extends StatelessWidget {
                 ),
               const Spacer(),
               IconButton(
-                onPressed: () => editCallback(categorie: categorie),
+                onPressed: () {
+                  print(category.id);
+                  editCallback(categorie: category, update: true);
+                },
                 icon: const Icon(
                   Icons.edit,
                   size: 32,

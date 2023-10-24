@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/l10n/app_localizations.dart';
-import 'package:just_finance_app/src/categorie.dart';
-import 'package:just_finance_app/widgets/categorie_card.dart';
-import 'package:just_finance_app/widgets/categorie_dialog.dart';
+import 'package:just_finance_app/src/category.dart';
+import 'package:just_finance_app/widgets/category_card.dart';
+import 'package:just_finance_app/widgets/category_dialog.dart';
 
 final coreDatabase = CoreDatabase();
 
@@ -15,31 +15,31 @@ class CategoriesEditor extends StatefulWidget {
 }
 
 class _CategoriesEditorState extends State<CategoriesEditor> {
-  void _showCategorieDialog({Categorie? categorie, bool update = false}) {
+  void _showCategoryDialog({Category? category, bool update = false}) {
     showDialog(
       context: context,
       builder: (context) {
         late Function action;
         if (update) {
-          action = _updateCategorie;
+          action = _updateCategory;
         } else {
-          action = _insertCategorie;
+          action = _insertCategory;
         }
-        return CategorieDialog(
-          categorie: categorie,
+        return CategoryDialog(
+          category: category,
           actionCallback: action,
         );
       },
     );
   }
 
-  Future<void> _updateCategorie(Categorie categorie) async {
-    await coreDatabase.updateCategorie(categorie);
+  Future<void> _updateCategory(Category category) async {
+    await coreDatabase.updateCategory(category);
     setState(() {});
   }
 
-  Future<void> _insertCategorie(Categorie categorie) async {
-    await coreDatabase.insertCategorie(categorie);
+  Future<void> _insertCategory(Category category) async {
+    await coreDatabase.insertCategory(category);
     setState(() {});
   }
 
@@ -51,7 +51,7 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
         title: Text(AppLocalizations.of(context)!.categoriesEditorTitle),
         actions: [
           IconButton(
-            onPressed: () => _showCategorieDialog(),
+            onPressed: () => _showCategoryDialog(),
             icon: const Icon(
               Icons.add_box,
               size: 42,
@@ -67,9 +67,9 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                return CategorieCard(
-                  categorie: snapshot.data![index],
-                  editCallback: _showCategorieDialog,
+                return CategoryCard(
+                  category: snapshot.data![index],
+                  editCallback: _showCategoryDialog,
                 );
               },
             );

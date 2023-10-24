@@ -21,34 +21,31 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var onHomeTab = true;
-  double walletValue = 0;
-  double incommingValue = 0;
-  double dispenseValue = 0;
 
-  changeOnHomeTab(bool value) {
+  _changeOnHomeTab(bool value) {
     setState(() {
       onHomeTab = value;
     });
   }
 
-  void _showTransactionDialog(bool incomming) {
+  void _showTransactionDialog(bool income) {
     showDialog(
       context: context,
       builder: (context) {
-        return TransactionDialog(incomming: incomming);
+        return TransactionDialog(income: income);
       },
     );
   }
 
   void _showEditTransactionDialog(
-    bool incomming,
+    bool income,
     TransactionInfo transaction,
   ) {
     showDialog(
       context: context,
       builder: (context) {
         return TransactionDialog(
-          incomming: incomming,
+          income: income,
           transaction: transaction,
         );
       },
@@ -58,7 +55,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopBar(changeTabCallback: changeOnHomeTab),
+      appBar: TopBar(changeTabCallback: _changeOnHomeTab),
       floatingActionButton: onHomeTab
           ? CreateTransactionButtons(dialogCallback: _showTransactionDialog)
           : null,

@@ -1,4 +1,4 @@
-import 'package:just_finance_app/src/categorie.dart';
+import 'package:just_finance_app/src/category.dart';
 import 'package:just_finance_app/src/config.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
 import 'package:path/path.dart';
@@ -26,11 +26,11 @@ class CoreDatabase {
           CREATE TABLE $_transactionsTable(
             id INTEGER PRIMARY KEY,
             title TEXT,
-            incomming INTEGER,
+            income INTEGER,
             value REAL,
-            categorie INTEGER,
-            categorieName TEXT,
-            FOREIGN KEY(categorie) REFERENCES _categoriesTable(id)
+            category INTEGER,
+            categoryName TEXT,
+            FOREIGN KEY(category) REFERENCES _categoriesTable(id)
             );''',
         );
         await db.execute('''
@@ -87,10 +87,10 @@ class CoreDatabase {
       return TransactionInfo(
         id: maps[index]['id'],
         title: maps[index]['title'],
-        incomming: maps[index]['incomming'],
+        income: maps[index]['income'],
         value: maps[index]['value'],
-        categorie: maps[index]['categorie'],
-        categorieName: maps[index]['categorieName'],
+        categorie: maps[index]['category'],
+        categorieName: maps[index]['categoryName'],
       );
     });
   }
@@ -103,12 +103,12 @@ class CoreDatabase {
 
   //Categories//
 
-  Future<List<Categorie>> categoriesList() async {
+  Future<List<Category>> categoriesList() async {
     final db = await _db;
     final List<Map<String, dynamic>> maps = await db.query(_categoriesTable);
 
     return List.generate(maps.length, (index) {
-      return Categorie(
+      return Category(
         id: maps[index]['id'],
         name: maps[index]['name'],
         type: maps[index]['type'],
@@ -116,15 +116,15 @@ class CoreDatabase {
     });
   }
 
-  Future<List<Categorie>> incommingCategories() async {
+  Future<List<Category>> incomeCategories() async {
     final db = await _db;
     final List<Map<String, dynamic>> maps = await db.query(
       _categoriesTable,
       where: 'type = ?',
-      whereArgs: [CategorieTypes.incomming],
+      whereArgs: [CategoryTypes.income],
     );
     return List.generate(maps.length, (index) {
-      return Categorie(
+      return Category(
         id: maps[index]['id'],
         name: maps[index]['name'],
         type: maps[index]['type'],
@@ -132,15 +132,15 @@ class CoreDatabase {
     });
   }
 
-  Future<List<Categorie>> dispenseCategories() async {
+  Future<List<Category>> expenseCategories() async {
     final db = await _db;
     final List<Map<String, dynamic>> maps = await db.query(
       _categoriesTable,
       where: 'type = ?',
-      whereArgs: [CategorieTypes.dispense],
+      whereArgs: [CategoryTypes.expense],
     );
     return List.generate(maps.length, (index) {
-      return Categorie(
+      return Category(
         id: maps[index]['id'],
         name: maps[index]['name'],
         type: maps[index]['type'],
@@ -148,7 +148,7 @@ class CoreDatabase {
     });
   }
 
-  Future<Categorie> getCategorieById(int id) async {
+  Future<Category> getCategoryById(int id) async {
     final db = await _db;
     final List<Map<String, dynamic>> map = await db.query(
       _categoriesTable,
@@ -156,14 +156,14 @@ class CoreDatabase {
       whereArgs: [id],
       limit: 1,
     );
-    return Categorie(
+    return Category(
       id: map[0]['id'],
       name: map[0]['name'],
       type: map[0]['type'],
     );
   }
 
-  Future<void> insertCategorie(Categorie categorie) async {
+  Future<void> insertCategory(Category categorie) async {
     final db = await _db;
     await db.insert(
       _categoriesTable,
@@ -172,7 +172,7 @@ class CoreDatabase {
     );
   }
 
-  Future<void> updateCategorie(Categorie categorie) async {
+  Future<void> updateCategory(Category categorie) async {
     final db = await _db;
     await db.update(
       _categoriesTable,

@@ -6,16 +6,16 @@ final coreDatabase = CoreDatabase();
 
 class WalletRepository extends ChangeNotifier {
   double _walletTotalValue = 0;
-  double _walletIncommingValue = 0;
-  double _walletDispenseValue = 0;
+  double _walletIncomeValue = 0;
+  double _walletExpenseValue = 0;
 
   WalletRepository() {
     updateWalletValue();
   }
 
   double get walletTotalValue => _walletTotalValue;
-  double get walletIncommingValue => _walletIncommingValue;
-  double get walletDispenseValue => _walletDispenseValue;
+  double get walletIncomeValue => _walletIncomeValue;
+  double get walletExpenseValue => _walletExpenseValue;
 
   Future<void> insertTransaction(TransactionInfo transaction) async {
     await coreDatabase.insertTransaction(transaction);
@@ -35,20 +35,20 @@ class WalletRepository extends ChangeNotifier {
   void updateWalletValue() async {
     var transactions = await coreDatabase.transactionsList();
     double newWalletValue = 0;
-    double newIncommingValue = 0;
-    double newDispenseValue = 0;
+    double newIncomeValue = 0;
+    double newExpenseValue = 0;
     for (var transaction in transactions) {
-      if (transaction.incomming == 1) {
+      if (transaction.income == 1) {
         newWalletValue += transaction.value;
-        newIncommingValue += transaction.value;
+        newIncomeValue += transaction.value;
       } else {
         newWalletValue -= transaction.value;
-        newDispenseValue += transaction.value;
+        newExpenseValue += transaction.value;
       }
     }
     _walletTotalValue = newWalletValue;
-    _walletIncommingValue = newIncommingValue;
-    _walletDispenseValue = newDispenseValue;
+    _walletIncomeValue = newIncomeValue;
+    _walletExpenseValue = newExpenseValue;
     notifyListeners();
   }
 }

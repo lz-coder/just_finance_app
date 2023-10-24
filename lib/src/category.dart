@@ -1,5 +1,5 @@
-class Categorie {
-  Categorie({
+class Category {
+  Category({
     required this.id,
     required this.name,
     required this.type,
@@ -19,11 +19,11 @@ class Categorie {
 
   @override
   String toString() {
-    return 'Categorie{id: $id, name: $name, type: $type}';
+    return 'Category{id: $id, name: $name, type: $type}';
   }
 }
 
-class CategorieTypes {
-  static const String incomming = 'incomming';
-  static const String dispense = 'dispense';
+class CategoryTypes {
+  static const String income = 'income';
+  static const String expense = 'expense';
 }

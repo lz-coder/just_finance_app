@@ -13,17 +13,17 @@ class HomePageGraphics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final incommingValue =
-        Provider.of<WalletRepository>(context).walletIncommingValue;
-    final dispenseValue =
-        Provider.of<WalletRepository>(context).walletDispenseValue;
+    final incomeValue =
+        Provider.of<WalletRepository>(context).walletIncomeValue;
+    final expenseValue =
+        Provider.of<WalletRepository>(context).walletExpenseValue;
     final pieData = <_PieData>[
-      _PieData(AppLocalizations.of(context)!.transactionIncomming,
-          incommingValue, AppLocalizations.of(context)!.transactionIncomming),
-      _PieData(AppLocalizations.of(context)!.transactionDispense, dispenseValue,
+      _PieData(AppLocalizations.of(context)!.transactionIncomming, incomeValue,
+          AppLocalizations.of(context)!.transactionIncomming),
+      _PieData(AppLocalizations.of(context)!.transactionDispense, expenseValue,
           AppLocalizations.of(context)!.transactionDispense),
     ];
-    if (incommingValue > 0 || dispenseValue > 0) {
+    if (incomeValue > 0 || expenseValue > 0) {
       return Center(
         child: SfCircularChart(
           title: ChartTitle(text: AppLocalizations.of(context)!.mainGraphTitle),

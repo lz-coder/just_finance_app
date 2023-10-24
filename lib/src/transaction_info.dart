@@ -1,7 +1,7 @@
 class TransactionInfo {
   final int id;
   String title;
-  final int incomming;
+  final int income;
   double value;
   int categorie;
   String categorieName;
@@ -9,7 +9,7 @@ class TransactionInfo {
   TransactionInfo({
     required this.id,
     required this.title,
-    required this.incomming,
+    required this.income,
     required this.value,
     required this.categorie,
     required this.categorieName,
@@ -19,7 +19,7 @@ class TransactionInfo {
     return {
       'id': id,
       'title': title,
-      'incomming': incomming,
+      'incomming': income,
       'value': value,
       'categorie': categorie,
       'categorieName': categorieName,
@@ -32,6 +32,6 @@ class TransactionInfo {
 
   @override
   String toString() {
-    return 'Transaction{id: $id, title: $title, incomming: $incomming, value: $value}, categorie_is: $categorie';
+    return 'Transaction{id: $id, title: $title, incomming: $income, value: $value}, categorie_is: $categorie';
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_finance_app/Repository/wallet_repository.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/pages/categories_editor_page.dart';
-import 'package:just_finance_app/src/categorie.dart';
+import 'package:just_finance_app/src/category.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -10,12 +10,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 var coreDatabase = CoreDatabase();
 
 class TransactionDialog extends StatefulWidget {
-  final bool incomming;
+  final bool income;
   final TransactionInfo? transaction;
 
   const TransactionDialog({
     super.key,
-    required this.incomming,
+    required this.income,
     this.transaction,
   });
 
@@ -27,8 +27,8 @@ class _TransactionDialogState extends State<TransactionDialog> {
   final valueController = TextEditingController();
   final titleController = TextEditingController();
   final categoriesController = TextEditingController();
-  Categorie? selectedCategorie;
-  Categorie? preSelectedCategorie;
+  Category? selectedCategorie;
+  Category? preSelectedCategorie;
 
   void closeDialog(BuildContext context) {
     Navigator.of(context).pop();
@@ -47,7 +47,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
         width: 400,
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         decoration: BoxDecoration(
-          color: widget.incomming
+          color: widget.income
               ? const Color.fromARGB(155, 39, 80, 51)
               : const Color.fromARGB(155, 80, 47, 39),
         ),
@@ -74,20 +74,20 @@ class _TransactionDialogState extends State<TransactionDialog> {
                       .transactionDialogValueLabel)),
             ),
             FutureBuilder(
-              future: widget.incomming
-                  ? coreDatabase.incommingCategories()
-                  : coreDatabase.dispenseCategories(),
+              future: widget.income
+                  ? coreDatabase.incomeCategories()
+                  : coreDatabase.expenseCategories(),
               builder: (context, snapshot) {
-                final List<DropdownMenuEntry<Categorie>> categorieEntries = [];
+                final List<DropdownMenuEntry<Category>> categoryEntries = [];
                 if (snapshot.hasData) {
                   //selectedCategorie = snapshot.data![0];
                   for (final categorie in snapshot.data!) {
-                    categorieEntries.add(DropdownMenuEntry(
+                    categoryEntries.add(DropdownMenuEntry(
                         value: categorie, label: categorie.name));
                   }
 
                   if (widget.transaction != null && selectedCategorie == null) {
-                    for (Categorie categorie in snapshot.data!) {
+                    for (Category categorie in snapshot.data!) {
                       if (categorie.id == widget.transaction!.categorie) {
                         selectedCategorie = categorie;
                       }
@@ -100,15 +100,15 @@ class _TransactionDialogState extends State<TransactionDialog> {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      DropdownMenu<Categorie>(
+                      DropdownMenu<Category>(
                         width: 220,
                         initialSelection:
                             preSelectedCategorie ?? selectedCategorie,
                         controller: categoriesController,
                         label: Text(AppLocalizations.of(context)!
                             .transactionDialogCategorieLabel),
-                        dropdownMenuEntries: categorieEntries,
-                        onSelected: (Categorie? categorie) {
+                        dropdownMenuEntries: categoryEntries,
+                        onSelected: (Category? categorie) {
                           selectedCategorie = categorie;
                         },
                       ),
@@ -155,7 +155,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                               // ignore: use_build_context_synchronously
                               : AppLocalizations.of(context)!
                                   .transactionCardNew,
-                          incomming: widget.incomming ? 1 : 0,
+                          income: widget.income ? 1 : 0,
                           value: valueController.text.isNotEmpty
                               ? double.parse(valueController.text)
                               : 1,
