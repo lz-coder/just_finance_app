@@ -9,6 +9,10 @@ class CoreDatabase {
   final _categoriesTable = 'categories';
   final _configsTable = 'configs';
 
+  String get transactionsTable => _transactionsTable;
+  String get categoriesTable => _categoriesTable;
+  String get configsTable => _configsTable;
+
   late final Future<Database> _db = () async {
     return await openDatabase(
       join(await getDatabasesPath(), 'core_database.db'),
@@ -163,22 +167,22 @@ class CoreDatabase {
     );
   }
 
-  Future<void> insertCategory(Category categorie) async {
+  Future<void> insertCategory(Category category) async {
     final db = await _db;
     await db.insert(
       _categoriesTable,
-      categorie.toMap(),
+      category.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  Future<void> updateCategory(Category categorie) async {
+  Future<void> updateCategory(Category category) async {
     final db = await _db;
     await db.update(
       _categoriesTable,
-      categorie.toMap(),
+      category.toMap(),
       where: 'id = ?',
-      whereArgs: [categorie.id],
+      whereArgs: [category.id],
     );
   }
 
