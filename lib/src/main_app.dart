@@ -18,26 +18,28 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  Config? _supportLanguageConfig;
+  Config? _loadedLocaleConfig;
 
   Future<void> _loadConfig() async {
-    final config = await coreDatabase.getConfig('locale_config');
-    setState(() {
-      _supportLanguageConfig = config;
-    });
+    final Config? config = await coreDatabase.getConfig('locale_config');
+    if (config != null) {
+      setState(() {
+        _loadedLocaleConfig = config;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_supportLanguageConfig == null) {
+    if (_loadedLocaleConfig == null) {
       _loadConfig();
     }
     return Consumer<ConfigRepository>(builder: (context, value, child) {
-      if (_supportLanguageConfig != null &&
+      if (_loadedLocaleConfig != null &&
           value.currentLocale != null &&
-          value.currentLocale != _supportLanguageConfig!.toLocale()) {
+          value.currentLocale != _loadedLocaleConfig!.toLocale()) {
         _loadConfig();
-        _supportLanguageConfig = null;
+        _loadedLocaleConfig = null;
       }
       return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -45,8 +47,8 @@ class _MainAppState extends State<MainApp> {
         theme: ThemeData(colorScheme: const ColorScheme.dark()),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        locale: _supportLanguageConfig != null
-            ? _supportLanguageConfig!.toLocale()
+        locale: _loadedLocaleConfig != null
+            ? _loadedLocaleConfig!.toLocale()
             : Provider.of<ConfigRepository>(context).currentLocale,
         home: DefaultTabController(
           length: 2,
