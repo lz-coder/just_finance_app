@@ -11,12 +11,10 @@ class CategoryDialog extends StatefulWidget {
   const CategoryDialog({
     super.key,
     this.category,
-    required this.actionCallback,
     this.isIncome,
   });
 
   final Category? category;
-  final Function actionCallback;
   final bool? isIncome;
 
   @override
@@ -67,8 +65,6 @@ class _CategorieDialogState extends State<CategoryDialog> {
                     void executor() async {
                       if (widget.category != null) {
                         widget.category!.name = _categorieNameController.text;
-                        //await Provider.of<CategoryRepository>(context)
-                        //.insertCategory(widget.category!);
                         updateCategory(widget.category!);
                       } else {
                         late int lastCategorieId;
@@ -86,8 +82,6 @@ class _CategorieDialogState extends State<CategoryDialog> {
                               ? CategoryTypes.income
                               : CategoryTypes.expense,
                         );
-                        //await Provider.of<CategoryRepository>(context)
-                        //.insertCategory(category);
                         addCategory(category);
                       }
                     }
