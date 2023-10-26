@@ -89,8 +89,9 @@ class _CategorieDialogState extends State<CategoryDialog> {
                     executor();
                     Navigator.of(context).pop();
                   },
-                  child: Text(
-                      AppLocalizations.of(context)!.transactionDialogAddLabel),
+                  child: Text(widget.category == null
+                      ? AppLocalizations.of(context)!.transactionDialogAddLabel
+                      : MaterialLocalizations.of(context).saveButtonLabel),
                 ),
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
