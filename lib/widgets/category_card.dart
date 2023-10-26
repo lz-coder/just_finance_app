@@ -7,13 +7,14 @@ class CategoryCard extends StatelessWidget {
     super.key,
     required this.category,
     required this.editCallback,
+    required this.deleteCallback,
   });
 
   final Category category;
 
   ///TODO: implement callback functions
-  final Function editCallback;
-  //final Function deleteCallback;
+  final Function({Category category, bool update}) editCallback;
+  final Function({required Category category}) deleteCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -49,14 +50,15 @@ class CategoryCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              if (category.id > 3)
-                IconButton(
-                  onPressed: () => '',
-                  icon: const Icon(
-                    Icons.delete_forever,
-                    color: Colors.red,
-                  ),
+              IconButton(
+                onPressed: category.id < 3
+                    ? null
+                    : () => deleteCallback(category: category),
+                icon: Icon(
+                  Icons.delete_forever,
+                  color: category.id > 3 ? Colors.red : Colors.grey,
                 ),
+              ),
               const Spacer(),
               IconButton(
                 onPressed: () {

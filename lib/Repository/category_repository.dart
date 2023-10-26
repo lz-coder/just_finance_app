@@ -14,4 +14,9 @@ class CategoryRepository extends ChangeNotifier {
     await coreDatabase.updateCategory(category);
     notifyListeners();
   }
+
+  Future<void> deleteCategory(Category category) async {
+    await coreDatabase.deleteCategory(category);
+    notifyListeners();
+  }
 }

@@ -38,29 +38,36 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
     showDialog(
       context: context,
       builder: (context) {
-        late Function action;
-        if (update) {
-          action = _updateCategory;
-        } else {
-          action = _insertCategory;
-        }
         return CategoryDialog(
           category: category,
-          actionCallback: action,
           isIncome: isIncome,
         );
       },
     );
   }
 
-  Future<void> _updateCategory(Category category) async {
-    await coreDatabase.updateCategory(category);
-    setState(() {});
-  }
-
-  Future<void> _insertCategory(Category category) async {
-    await coreDatabase.insertCategory(category);
-    setState(() {});
+  void _showDeleteCategoryDialog({required Category category}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Delete Category'),
+        content: Text('This action cannot be undone!'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Provider.of<CategoryRepository>(context, listen: false)
+                  .deleteCategory(category);
+              Navigator.of(context).pop();
+            },
+            child: Text(MaterialLocalizations.of(context).deleteButtonTooltip),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -105,17 +112,20 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
           ),
           body: Consumer<CategoryRepository>(builder: (context, value, child) {
             return TabBarView(
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 FutureBuilder(
                   future: coreDatabase.incomeCategories(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return ListView.builder(
+                        padding: const EdgeInsets.only(bottom: 80),
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
                           return CategoryCard(
                             category: snapshot.data![index],
                             editCallback: _showCategoryDialog,
+                            deleteCallback: _showDeleteCategoryDialog,
                           );
                         },
                       );
@@ -129,11 +139,13 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return ListView.builder(
+                        padding: const EdgeInsets.only(bottom: 80),
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
                           return CategoryCard(
                             category: snapshot.data![index],
                             editCallback: _showCategoryDialog,
+                            deleteCallback: _showDeleteCategoryDialog,
                           );
                         },
                       );
