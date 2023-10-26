@@ -186,6 +186,15 @@ class CoreDatabase {
     );
   }
 
+  Future<void> deleteCategory(Category category) async {
+    final db = await _db;
+    await db.delete(
+      _categoriesTable,
+      where: 'id = ?',
+      whereArgs: [category.id],
+    );
+  }
+
   //Configs//
   Future<void> insertConfig(Config config) async {
     final db = await _db;
