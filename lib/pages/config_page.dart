@@ -34,6 +34,18 @@ class _ConfigPageState extends State<ConfigPage> {
 
   final configController = TextEditingController();
 
+  void _showAboutDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const AboutDialog(
+          applicationName: 'Just Finance',
+          applicationVersion: '0.1 - Alpha',
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<DropdownMenuEntry<Locale>> localesEntries = [];
@@ -58,12 +70,13 @@ class _ConfigPageState extends State<ConfigPage> {
         leading: BackButton(
           onPressed: () => Navigator.pop(context),
         ),
-        actions: const [
+        actions: [
           IconButton(
-            onPressed: null,
-            icon: Icon(
+            onPressed: () => _showAboutDialog(),
+            icon: const Icon(
               Icons.info,
               size: 32,
+              color: Color.fromARGB(255, 107, 224, 60),
             ),
           )
         ],
