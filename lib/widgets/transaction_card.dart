@@ -29,7 +29,15 @@ class TransactionCard extends StatelessWidget {
       child: ListTile(
         titleAlignment: ListTileTitleAlignment.center,
         title: Text(transaction.title),
-        subtitle: Text(transaction.categoryName),
+        subtitle: FutureBuilder(
+            future: coreDatabase.getCategoryById(transaction.category),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Text(snapshot.data!.name);
+              } else {
+                return const Text('...');
+              }
+            }),
         trailing: Text(
           Currency(locale: getCurrentLocale(context)).show(transaction.value),
           style: const TextStyle(fontSize: 18),
