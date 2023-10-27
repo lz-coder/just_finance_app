@@ -8,8 +8,8 @@
     "mainGraphTitle": "Main Graph",
     "graphPageNoData": "Insufficient data...",
     
-    "transactionIncomming": "Income",
-    "transactionDispense": "Expense",
+    "transactionIncome": "Income",
+    "transactionExpense": "Expense",
     
     "defaultCategorieBills": "Bills",
     "defaultCategoriePersonalExpenses": "Personal Expenses",
@@ -32,6 +32,9 @@
     "categoriesDialogTitleEdit": "Edit Category",
 
     "categorieTypeIncome": "Income",
-    "categorieTypeExpense": "Expense"
+    "categorieTypeExpense": "Expense",
+
+    "deleteCategoryDialogTitle": "Delete Category",
+    "deleteCategoryDialogMessage": "This action cannot be undone!"
     
 }
