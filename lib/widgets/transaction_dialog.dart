@@ -102,6 +102,10 @@ class _TransactionDialogState extends State<TransactionDialog> {
                     } else if (widget.transaction == null &&
                         selectedCategory == null) {
                       preSelectedCategory = snapshot.data![0];
+                    } else {
+                      if (!snapshot.data!.contains(selectedCategory)) {
+                        selectedCategory = snapshot.data![0];
+                      }
                     }
 
                     return Row(
