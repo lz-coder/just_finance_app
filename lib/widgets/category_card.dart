@@ -12,7 +12,6 @@ class CategoryCard extends StatelessWidget {
 
   final Category category;
 
-  ///TODO: implement callback functions
   final Function({Category category, bool update}) editCallback;
   final Function({required Category category}) deleteCallback;
 
@@ -51,7 +50,7 @@ class CategoryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               IconButton(
-                onPressed: category.id < 3
+                onPressed: category.id <= 3
                     ? null
                     : () => deleteCallback(category: category),
                 icon: Icon(
