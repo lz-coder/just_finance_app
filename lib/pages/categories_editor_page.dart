@@ -3,6 +3,7 @@ import 'package:just_finance_app/Repository/category_repository.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/l10n/app_localizations.dart';
 import 'package:just_finance_app/src/category.dart';
+import 'package:just_finance_app/src/transaction_info.dart';
 import 'package:just_finance_app/widgets/category_card.dart';
 import 'package:just_finance_app/widgets/category_dialog.dart';
 import 'package:provider/provider.dart';
@@ -47,26 +48,48 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
   }
 
   void _showDeleteCategoryDialog({required Category category}) {
+    Future<void> setDefaultCategory() async {
+      List<TransactionInfo> transactions =
+          await coreDatabase.getTransactionsByCategory(category.id);
+      for (TransactionInfo transaction in transactions) {
+        if (category.type == CategoryTypes.income) {
+          transaction.category = 0;
+        } else {
+          transaction.category = 2;
+        }
+        await coreDatabase.updateTransaction(transaction);
+      }
+    }
+
     showDialog(
       context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('Delete Category'),
-        content: Text('This action cannot be undone!'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Provider.of<CategoryRepository>(context, listen: false)
-                  .deleteCategory(category);
-              Navigator.of(context).pop();
-            },
-            child: Text(MaterialLocalizations.of(context).deleteButtonTooltip),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-          ),
-        ],
-      ),
+      builder: (BuildContext context) {
+        void deleteCategory() {
+          Provider.of<CategoryRepository>(context, listen: false)
+              .deleteCategory(category);
+          Navigator.of(context).pop();
+        }
+
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.deleteCategoryDialogTitle),
+          content:
+              Text(AppLocalizations.of(context)!.deleteCategoryDialogMessage),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                await setDefaultCategory();
+                deleteCategory();
+              },
+              child:
+                  Text(MaterialLocalizations.of(context).deleteButtonTooltip),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+            ),
+          ],
+        );
+      },
     );
   }
 
