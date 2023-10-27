@@ -18,10 +18,10 @@ class HomePageGraphics extends StatelessWidget {
     final expenseValue =
         Provider.of<WalletRepository>(context).walletExpenseValue;
     final pieData = <_PieData>[
-      _PieData(AppLocalizations.of(context)!.transactionIncomming, incomeValue,
-          AppLocalizations.of(context)!.transactionIncomming),
-      _PieData(AppLocalizations.of(context)!.transactionDispense, expenseValue,
-          AppLocalizations.of(context)!.transactionDispense),
+      _PieData(AppLocalizations.of(context)!.transactionIncome, incomeValue,
+          AppLocalizations.of(context)!.transactionIncome),
+      _PieData(AppLocalizations.of(context)!.transactionExpense, expenseValue,
+          AppLocalizations.of(context)!.transactionExpense),
     ];
     if (incomeValue > 0 || expenseValue > 0) {
       return Center(
