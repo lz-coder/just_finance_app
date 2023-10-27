@@ -34,7 +34,7 @@ class CoreDatabase {
             value REAL,
             category INTEGER,
             categoryName TEXT,
-            FOREIGN KEY(category) REFERENCES _categoriesTable(id)
+            FOREIGN KEY(category) REFERENCES $_categoriesTable(id)
             );''',
         );
         await db.execute('''
@@ -87,6 +87,26 @@ class CoreDatabase {
     final db = await _db;
     final List<Map<String, dynamic>> maps = await db.query('transactions');
 
+    return List.generate(maps.length, (index) {
+      return TransactionInfo(
+        id: maps[index]['id'],
+        title: maps[index]['title'],
+        income: maps[index]['income'],
+        value: maps[index]['value'],
+        category: maps[index]['category'],
+        categoryName: maps[index]['categoryName'],
+      );
+    });
+  }
+
+  Future<List<TransactionInfo>> getTransactionsByCategory(
+      int categoryId) async {
+    final db = await _db;
+    final List<Map<String, dynamic>> maps = await db.query(
+      _transactionsTable,
+      where: 'category = ?',
+      whereArgs: [categoryId],
+    );
     return List.generate(maps.length, (index) {
       return TransactionInfo(
         id: maps[index]['id'],
@@ -172,7 +192,7 @@ class CoreDatabase {
     await db.insert(
       _categoriesTable,
       category.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
+      conflictAlgorithm: ConflictAlgorithm.ignore,
     );
   }
 
