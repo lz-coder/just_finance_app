@@ -41,6 +41,7 @@ class _ConfigPageState extends State<ConfigPage> {
         return const AboutDialog(
           applicationName: 'Just Finance',
           applicationVersion: '0.1 - Alpha',
+          applicationLegalese: 'Copyright © 2023 - Grotbang Dev Group',
         );
       },
     );
