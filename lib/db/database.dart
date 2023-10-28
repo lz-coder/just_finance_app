@@ -1,6 +1,7 @@
 import 'package:just_finance_app/src/category.dart';
 import 'package:just_finance_app/src/config.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
+import 'package:just_finance_app/src/year.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -8,6 +9,8 @@ class CoreDatabase {
   final _transactionsTable = 'transactions';
   final _categoriesTable = 'categories';
   final _configsTable = 'configs';
+  final _monthsTable = 'months';
+  final _yearsTable = 'years';
 
   String get transactionsTable => _transactionsTable;
   String get categoriesTable => _categoriesTable;
@@ -17,6 +20,18 @@ class CoreDatabase {
     return await openDatabase(
       join(await getDatabasesPath(), 'core_database.db'),
       onCreate: (db, version) async {
+        await db.execute(
+          '''
+          CREATE TABLE $_monthsTable(
+            month INTEGER PRIMARY KEY
+          );''',
+        );
+        await db.execute(
+          '''
+          CREATE TABLE $_yearsTable(
+            year INTEGER PRIMARY KEY
+          );''',
+        );
         await db.execute(
           '''
           CREATE TABLE $_categoriesTable(
@@ -34,22 +49,46 @@ class CoreDatabase {
             value REAL,
             category INTEGER,
             categoryName TEXT,
-            FOREIGN KEY(category) REFERENCES $_categoriesTable(id)
+            month INTEGER,
+            year INTEGER,
+            date TEXT,
+            FOREIGN KEY(category) REFERENCES $_categoriesTable(id),
+            FOREIGN KEY(month) REFERENCES $_monthsTable(month),
+            FOREIGN KEY(year) REFERENCES $_yearsTable(year)
             );''',
         );
-        await db.execute('''
+        await db.execute(
+          '''
           CREATE TABLE $_configsTable(
             id INTEGER PRIMARY KEY,
             name TEXT,
             value TEXT
-          )
-          ''');
+          );''',
+        );
+
+        for (var i = 1; i < 13; i++) {
+          await db.insert(
+            _monthsTable,
+            {"month": i},
+            conflictAlgorithm: ConflictAlgorithm.replace,
+          );
+        }
       },
       version: 1,
     );
   }();
 
   CoreDatabase();
+
+  //Years//
+  Future<void> insertYear(Year year) async {
+    final db = await _db;
+    await db.insert(
+      _yearsTable,
+      year.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
 
   //Trasactions//
 
@@ -95,6 +134,9 @@ class CoreDatabase {
         value: maps[index]['value'],
         category: maps[index]['category'],
         categoryName: maps[index]['categoryName'],
+        year: maps[index]['year'],
+        month: maps[index]['month'],
+        date: maps[index]['date'],
       );
     });
   }
@@ -115,6 +157,9 @@ class CoreDatabase {
         value: maps[index]['value'],
         category: maps[index]['category'],
         categoryName: maps[index]['categoryName'],
+        year: maps[index]['year'],
+        month: maps[index]['month'],
+        date: maps[index]['date'],
       );
     });
   }
