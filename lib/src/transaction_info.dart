@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class TransactionInfo {
   final int id;
   String title;
@@ -5,6 +7,9 @@ class TransactionInfo {
   double value;
   int category;
   String categoryName;
+  final int year;
+  final int month;
+  final String date;
 
   TransactionInfo({
     required this.id,
@@ -13,6 +18,9 @@ class TransactionInfo {
     required this.value,
     required this.category,
     required this.categoryName,
+    required this.year,
+    required this.month,
+    required this.date,
   });
 
   Map<String, dynamic> toMap() {
@@ -23,6 +31,9 @@ class TransactionInfo {
       'value': value,
       'category': category,
       'categoryName': categoryName,
+      'year': year,
+      'month': month,
+      'date': date,
     };
   }
 
