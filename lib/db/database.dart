@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:just_finance_app/src/category.dart';
 import 'package:just_finance_app/src/config.dart';
+import 'package:just_finance_app/src/month.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
 import 'package:just_finance_app/src/year.dart';
 import 'package:path/path.dart';
@@ -88,6 +90,40 @@ class CoreDatabase {
       year.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+  }
+
+  Future<List<Year>?> getYears() async {
+    final db = await _db;
+    final List<Map<String, dynamic>> maps = await db.query(_yearsTable);
+    if (maps.isNotEmpty) {
+      return List.generate(maps.length, (index) {
+        return Year(year: maps[index]['year']);
+      });
+    } else {
+      return null;
+    }
+  }
+
+  Future<List<Month>?> getMonthsFromYear({
+    required int year,
+    required BuildContext context,
+  }) async {
+    final db = await _db;
+    final List<Map<String, dynamic>> maps = await db.rawQuery(
+      '''SELECT $_transactionsTable.month FROM $_transactionsTable
+        INNER JOIN $_monthsTable ON $_monthsTable.month = $_transactionsTable.month
+        WHERE year = ?
+        GROUP BY $_transactionsTable.month
+      ''',
+      [year],
+    );
+    if (maps.isNotEmpty) {
+      return List.generate(maps.length, (index) {
+        return Month(monthNumber: maps[index]['month'], context: context);
+      });
+    } else {
+      return null;
+    }
   }
 
   //Trasactions//
