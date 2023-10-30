@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:just_finance_app/Repository/category_repository.dart';
 import 'package:just_finance_app/Repository/wallet_repository.dart';
 import 'package:just_finance_app/db/database.dart';
@@ -174,6 +175,9 @@ class _TransactionDialogState extends State<TransactionDialog> {
                             categoryName: selectedCategory != null
                                 ? selectedCategory!.name
                                 : preSelectedCategory!.name,
+                            year: DateTime.now().year,
+                            month: DateTime.now().month,
+                            date: DateFormat.yMd().format(DateTime.now()),
                           );
                           // ignore: use_build_context_synchronously
                           await Provider.of<WalletRepository>(context,

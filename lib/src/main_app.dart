@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_finance_app/Repository/config_repository.dart';
+import 'package:just_finance_app/Repository/date_repository.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/pages/home_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -31,13 +32,16 @@ class _MainAppState extends State<MainApp> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     appInit.setYear();
   }
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<DateRepository>(context, listen: false).currentMonth =
+        DateTime.now().month;
+    Provider.of<DateRepository>(context, listen: false).currentYear =
+        DateTime.now().year;
     if (_loadedLocaleConfig == null) {
       _loadConfig();
     }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_finance_app/Repository/category_repository.dart';
 import 'package:just_finance_app/Repository/config_repository.dart';
+import 'package:just_finance_app/Repository/date_repository.dart';
 import 'package:just_finance_app/Repository/wallet_repository.dart';
 import 'package:just_finance_app/src/main_app.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => CategoryRepository(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => DateRepository(),
         )
       ],
       child: const MainApp(),

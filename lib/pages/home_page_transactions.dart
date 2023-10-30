@@ -21,7 +21,8 @@ class HomePageTransactions extends StatelessWidget {
     return Consumer<CategoryRepository>(
       builder: (context, value, child) {
         return FutureBuilder(
-          future: coreDatabase.transactionsList(),
+          future: coreDatabase.getTransactionsByYearMonth(
+              year: DateTime.now().year, month: DateTime.now().month),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(
@@ -63,7 +64,7 @@ class HomePageTransactions extends StatelessWidget {
                 },
               );
             } else {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: Text('Não há movimentações!'));
             }
           },
         );

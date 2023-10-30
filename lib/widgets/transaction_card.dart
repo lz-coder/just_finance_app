@@ -32,15 +32,17 @@ class TransactionCard extends StatelessWidget {
         subtitle: FutureBuilder(
             future: coreDatabase.getCategoryById(transaction.category),
             builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Text(snapshot.data!.name);
-              } else {
-                return const Text('...');
-              }
+              return Text(snapshot.hasData ? snapshot.data!.name : 'category');
             }),
-        trailing: Text(
-          Currency(locale: getCurrentLocale(context)).show(transaction.value),
-          style: const TextStyle(fontSize: 18),
+        trailing: Column(
+          children: [
+            Text(transaction.date),
+            Text(
+              Currency(locale: getCurrentLocale(context))
+                  .show(transaction.value),
+              style: const TextStyle(fontSize: 18),
+            ),
+          ],
         ),
         onTap: () => dialogCallback(
           transaction.income == 0 ? false : true,
