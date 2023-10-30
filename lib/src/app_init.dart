@@ -3,6 +3,7 @@ import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/l10n/app_localizations.dart';
 import 'package:just_finance_app/src/category.dart';
 import 'package:just_finance_app/src/config.dart';
+import 'package:just_finance_app/src/year.dart';
 
 final coreDatabase = CoreDatabase();
 
@@ -34,7 +35,7 @@ class AppInit {
     );
   }
 
-  void initializeLocaleConfigs(BuildContext context) async {
+  Future<void> initializeLocaleConfigs(BuildContext context) async {
     final systemLocale =
         '${Localizations.localeOf(context).languageCode}_${Localizations.localeOf(context).countryCode}';
     final Config localeConfig = Config(
@@ -43,5 +44,10 @@ class AppInit {
       value: systemLocale,
     );
     await coreDatabase.insertConfig(localeConfig);
+  }
+
+  Future<void> setYear() async {
+    final currentYear = Year(year: DateTime.now().year);
+    await coreDatabase.insertYear(currentYear);
   }
 }
