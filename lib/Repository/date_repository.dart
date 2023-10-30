@@ -3,18 +3,34 @@ import 'package:flutter/material.dart';
 class DateRepository extends ChangeNotifier {
   int? _currentYear;
   int? _currentMonth;
+  int? _selectedMonth;
+  int? _selectedYear;
 
-  set currentYear(int? value) {
+  void setCurrentYear(int? value, {bool notify = false}) {
     _currentYear = value;
-    notifyListeners();
+    if (notify) notifyListeners();
   }
 
   int? get currentYear => _currentYear;
 
-  set currentMonth(int? value) {
+  void setCurrentMonth(int? value, {bool notify = false}) {
     _currentMonth = value;
-    notifyListeners();
+    if (notify) notifyListeners();
   }
 
   int? get currentMonth => _currentMonth;
+
+  set selectedYear(int? value) {
+    _selectedYear = value;
+    notifyListeners();
+  }
+
+  int? get selectedYear => _selectedYear;
+
+  set selectedMonth(int? value) {
+    _selectedMonth = value;
+    notifyListeners();
+  }
+
+  int? get selectedMonth => _selectedMonth;
 }
