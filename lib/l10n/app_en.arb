@@ -5,6 +5,7 @@
     "@configPageTitle": {
         "description": "Title of the settings page on the app bar"
     },
+
     "mainGraphTitle": "Main Graph",
     "graphPageNoData": "Insufficient data...",
     
@@ -35,6 +36,19 @@
     "categorieTypeExpense": "Expense",
 
     "deleteCategoryDialogTitle": "Delete Category",
-    "deleteCategoryDialogMessage": "This action cannot be undone!"
+    "deleteCategoryDialogMessage": "This action cannot be undone!",
+
+    "calendarMonthJanuary" : "January",
+    "calendarMonthFebruary": "February",
+    "calendarMonthMarch": "March",
+    "calendarMonthApril": "April",
+    "calendarMonthMay": "May",
+    "calendarMonthJune": "June",
+    "calendarMonthJuly": "July",
+    "calendarMonthAugust": "August",
+    "calendarMonthSeptember": "September",
+    "calendarMonthOctober": "October",
+    "calendarMonthNovember": "November",
+    "calendarMonthDecember": "December"
     
 }
