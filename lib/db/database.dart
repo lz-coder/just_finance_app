@@ -158,33 +158,14 @@ class CoreDatabase {
     );
   }
 
-  Future<List<TransactionInfo>> transactionsList() async {
-    final db = await _db;
-    final List<Map<String, dynamic>> maps = await db.query('transactions');
-
-    return List.generate(maps.length, (index) {
-      return TransactionInfo(
-        id: maps[index]['id'],
-        title: maps[index]['title'],
-        income: maps[index]['income'],
-        value: maps[index]['value'],
-        category: maps[index]['category'],
-        categoryName: maps[index]['categoryName'],
-        year: maps[index]['year'],
-        month: maps[index]['month'],
-        date: maps[index]['date'],
-      );
-    });
-  }
-
-  Future<List<TransactionInfo>> getTransactionsByCategory(
-      int categoryId) async {
+  Future<List<TransactionInfo>> transactionsList({int? category}) async {
     final db = await _db;
     final List<Map<String, dynamic>> maps = await db.query(
       _transactionsTable,
-      where: 'category = ?',
-      whereArgs: [categoryId],
+      where: category != null ? 'category = ?' : null,
+      whereArgs: category != null ? [category] : null,
     );
+
     return List.generate(maps.length, (index) {
       return TransactionInfo(
         id: maps[index]['id'],
