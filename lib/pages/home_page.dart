@@ -6,6 +6,8 @@ import 'package:just_finance_app/src/transaction_info.dart';
 import 'package:just_finance_app/widgets/create_transaction_buttons.dart';
 import 'package:just_finance_app/widgets/topbar.dart';
 import 'package:just_finance_app/widgets/transaction_dialog.dart';
+import 'package:just_finance_app/widgets/wallet_value_counter.dart';
+import 'package:just_finance_app/widgets/year_drawer_button.dart';
 import 'package:provider/provider.dart';
 
 import '../db/database.dart';
@@ -70,6 +72,36 @@ class _HomePageState extends State<HomePage> {
               );
             }),
             const HomePageGraphics(),
+          ],
+        ),
+      ),
+      drawer: Drawer(
+        //width: 240,
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 100,
+              child: DrawerHeader(
+                child: WalletValueCounter(),
+              ),
+            ),
+            Expanded(
+              child: FutureBuilder(
+                future: coreDatabase.getYears(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        return YearDrawerButton(year: snapshot.data![index]);
+                      },
+                    );
+                  } else {
+                    return const Text('');
+                  }
+                },
+              ),
+            )
           ],
         ),
       ),
