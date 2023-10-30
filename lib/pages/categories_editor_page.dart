@@ -50,7 +50,7 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
   void _showDeleteCategoryDialog({required Category category}) {
     Future<void> setDefaultCategory() async {
       List<TransactionInfo> transactions =
-          await coreDatabase.getTransactionsByCategory(category.id);
+          await coreDatabase.transactionsList(category: category.id);
       for (TransactionInfo transaction in transactions) {
         if (category.type == CategoryTypes.income) {
           transaction.category = 0;
