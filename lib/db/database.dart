@@ -128,6 +128,37 @@ class CoreDatabase {
 
   //Trasactions//
 
+  Future<List<TransactionInfo>?> getTransactionsByYearMonth({
+    required int year,
+    required int month,
+  }) async {
+    final db = await _db;
+    final List<Map<String, dynamic>> maps =
+        await db.rawQuery('''SELECT * FROM $transactionsTable
+        WHERE year = ? AND month = ?
+      ''', [year, month]);
+    if (maps.isNotEmpty) {
+      return List.generate(
+        maps.length,
+        (index) {
+          return TransactionInfo(
+            id: maps[index]['id'],
+            title: maps[index]['title'],
+            income: maps[index]['income'],
+            value: maps[index]['value'],
+            category: maps[index]['category'],
+            categoryName: maps[index]['categoryName'],
+            year: maps[index]['year'],
+            month: maps[index]['month'],
+            date: maps[index]['date'],
+          );
+        },
+      );
+    } else {
+      return null;
+    }
+  }
+
   Future<void> insertTransaction(TransactionInfo transaction,
       {replace = true}) async {
     final db = await _db;
