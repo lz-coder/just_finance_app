@@ -30,6 +30,13 @@ class _MainAppState extends State<MainApp> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    appInit.setYear();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (_loadedLocaleConfig == null) {
       _loadConfig();
