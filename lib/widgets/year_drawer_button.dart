@@ -17,32 +17,39 @@ class YearDrawerButton extends StatefulWidget {
 }
 
 class _YearDrawerButtonState extends State<YearDrawerButton> {
-  bool isActive = false;
+  bool isYearActive = false;
 
-  void active() {
+  void activeYear() {
     setState(() {
-      isActive = !isActive;
+      isYearActive = !isYearActive;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final dateProvider = Provider.of<DateRepository>(context, listen: false);
     final int currentYear = Provider.of<DateRepository>(context).currentYear!;
     final int currentMonth = Provider.of<DateRepository>(context).currentMonth!;
+
+    if (currentYear == widget.year.year) {
+      isYearActive = true;
+      //dateProvider.selectedYear = widget.year.year;
+    }
+
     return Column(
       children: [
         ListTile(
           leading: Icon(
-            isActive ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+            isYearActive ? Icons.arrow_drop_up : Icons.arrow_drop_down,
             size: 28,
           ),
           title: Text(
             '${widget.year.year}',
             style: const TextStyle(fontSize: 15),
           ),
-          onTap: () => active(),
+          onTap: () => activeYear(),
         ),
-        if (isActive)
+        if (isYearActive)
           FutureBuilder(
             future: coreDatabase.getMonthsFromYear(
                 year: widget.year.year, context: context),
@@ -56,13 +63,13 @@ class _YearDrawerButtonState extends State<YearDrawerButton> {
                     child: ListView.builder(
                       itemCount: months.length,
                       itemBuilder: (context, index) {
-                        final currentMonth = months[index];
+                        final month = months[index];
+
                         return ListTile(
-                          leading:
-                              currentMonth.monthNumber == DateTime.now().month
-                                  ? const Icon(Icons.arrow_right)
-                                  : null,
-                          title: Text(currentMonth.monthName!),
+                          leading: month.monthNumber == DateTime.now().month
+                              ? const Icon(Icons.arrow_right)
+                              : null,
+                          title: Text(month.monthName!),
                         );
                       },
                     ),

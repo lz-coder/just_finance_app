@@ -38,10 +38,10 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<DateRepository>(context, listen: false).currentMonth =
-        DateTime.now().month;
-    Provider.of<DateRepository>(context, listen: false).currentYear =
-        DateTime.now().year;
+    Provider.of<DateRepository>(context, listen: false)
+        .setCurrentMonth(DateTime.now().month);
+    Provider.of<DateRepository>(context, listen: false)
+        .setCurrentYear(DateTime.now().year);
     if (_loadedLocaleConfig == null) {
       _loadConfig();
     }
