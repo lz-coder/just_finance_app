@@ -28,13 +28,17 @@ class _YearDrawerButtonState extends State<YearDrawerButton> {
   @override
   Widget build(BuildContext context) {
     final dateProvider = Provider.of<DateRepository>(context, listen: false);
-    final int currentYear = Provider.of<DateRepository>(context).currentYear!;
-    final int currentMonth = Provider.of<DateRepository>(context).currentMonth!;
+    final int currentYear =
+        Provider.of<DateRepository>(context, listen: false).currentYear!;
+    final int currentMonth =
+        Provider.of<DateRepository>(context, listen: false).currentMonth!;
 
     if (currentYear == widget.year.year) {
       isYearActive = true;
       //dateProvider.selectedYear = widget.year.year;
     }
+
+    List<Month>? months;
 
     return Column(
       children: [
@@ -47,7 +51,9 @@ class _YearDrawerButtonState extends State<YearDrawerButton> {
             '${widget.year.year}',
             style: const TextStyle(fontSize: 15),
           ),
-          onTap: () => activeYear(),
+          onTap: () {
+            activeYear();
+          },
         ),
         if (isYearActive)
           FutureBuilder(
@@ -55,21 +61,24 @@ class _YearDrawerButtonState extends State<YearDrawerButton> {
                 year: widget.year.year, context: context),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                final List<Month> months = snapshot.data!;
+                months = snapshot.data!;
                 return Align(
                   child: SizedBox(
                     width: 200,
-                    height: 60 * months.length.toDouble(),
+                    height: 60 * months!.length.toDouble(),
                     child: ListView.builder(
-                      itemCount: months.length,
+                      itemCount: months!.length,
                       itemBuilder: (context, index) {
-                        final month = months[index];
-
+                        final month = months![index];
                         return ListTile(
-                          leading: month.monthNumber == DateTime.now().month
+                          leading: month.monthNumber == currentMonth
                               ? const Icon(Icons.arrow_right)
                               : null,
                           title: Text(month.monthName!),
+                          onTap: () {
+                            dateProvider.selectedMonth = month.monthNumber;
+                            dateProvider.selectedYear = widget.year.year;
+                          },
                         );
                       },
                     ),

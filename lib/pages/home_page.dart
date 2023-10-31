@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_finance_app/Repository/date_repository.dart';
 import 'package:just_finance_app/Repository/wallet_repository.dart';
 import 'package:just_finance_app/pages/home_page_graphics.dart';
 import 'package:just_finance_app/pages/home_page_transactions.dart';
@@ -56,9 +57,18 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final currentYear =
+        Provider.of<DateRepository>(context, listen: false).currentYear;
+    final currentMonth =
+        Provider.of<DateRepository>(context, listen: false).currentMonth;
+    final selectedYear = Provider.of<DateRepository>(context).selectedYear;
+    final selectedMonth = Provider.of<DateRepository>(context).selectedMonth;
+
     return Scaffold(
       appBar: TopBar(changeTabCallback: _changeOnHomeTab),
-      floatingActionButton: onHomeTab
+      floatingActionButton: onHomeTab &&
+              currentYear == selectedYear &&
+              currentMonth == selectedMonth
           ? CreateTransactionButtons(dialogCallback: _showTransactionDialog)
           : null,
       body: Padding(
