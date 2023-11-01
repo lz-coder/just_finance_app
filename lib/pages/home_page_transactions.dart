@@ -4,7 +4,6 @@ import 'package:just_finance_app/Repository/date_repository.dart';
 import 'package:just_finance_app/Repository/wallet_repository.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/widgets/transaction_card.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 final coreDatabase = CoreDatabase();
