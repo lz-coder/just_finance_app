@@ -24,7 +24,7 @@ class WalletValueCounter extends StatelessWidget {
           padding: const EdgeInsets.only(left: 5, right: 20),
           child: Text(
               Currency(locale: getCurrentLocale(context)).show(totalValue),
-              style: TextStyle(fontSize: 22)),
+              style: const TextStyle(fontSize: 22)),
         ),
       ],
     );
