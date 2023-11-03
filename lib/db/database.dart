@@ -265,7 +265,7 @@ class CoreDatabase {
     });
   }
 
-  Future<Category> getCategoryById(int id) async {
+  Future<Category?> getCategoryById(int id) async {
     final db = await _db;
     final List<Map<String, dynamic>> map = await db.query(
       _categoriesTable,
@@ -273,11 +273,15 @@ class CoreDatabase {
       whereArgs: [id],
       limit: 1,
     );
-    return Category(
-      id: map[0]['id'],
-      name: map[0]['name'],
-      type: map[0]['type'],
-    );
+    if (map.isNotEmpty) {
+      return Category(
+        id: map[0]['id'],
+        name: map[0]['name'],
+        type: map[0]['type'],
+      );
+    } else {
+      return null;
+    }
   }
 
   Future<void> insertCategory(Category category) async {
