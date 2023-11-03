@@ -64,26 +64,29 @@ class _HomePageState extends State<HomePage> {
     final selectedYear = Provider.of<DateRepository>(context).selectedYear;
     final selectedMonth = Provider.of<DateRepository>(context).selectedMonth;
 
+    bool canCreateTransactions = false;
+    if (onHomeTab) {
+      if (currentYear == selectedYear && currentMonth == selectedMonth ||
+          selectedMonth == null && selectedYear == null) {
+        canCreateTransactions = true;
+      }
+    }
+
     return Scaffold(
       appBar: TopBar(changeTabCallback: _changeOnHomeTab),
-      floatingActionButton: onHomeTab &&
-              currentYear == selectedYear &&
-              currentMonth == selectedMonth
+      floatingActionButton: canCreateTransactions
           ? CreateTransactionButtons(dialogCallback: _showTransactionDialog)
           : null,
-      body: Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10, top: 4),
-        child: TabBarView(
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            Consumer<WalletRepository>(builder: (context, value, child) {
-              return HomePageTransactions(
-                updateDialogCallback: _showEditTransactionDialog,
-              );
-            }),
-            const HomePageGraphics(),
-          ],
-        ),
+      body: TabBarView(
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          Consumer<WalletRepository>(builder: (context, value, child) {
+            return HomePageTransactions(
+              updateDialogCallback: _showEditTransactionDialog,
+            );
+          }),
+          const HomePageGraphics(),
+        ],
       ),
       drawer: Drawer(
         //width: 240,
