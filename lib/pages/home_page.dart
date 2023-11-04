@@ -63,12 +63,29 @@ class _HomePageState extends State<HomePage> {
         Provider.of<DateRepository>(context, listen: false).currentMonth;
     final selectedYear = Provider.of<DateRepository>(context).selectedYear;
     final selectedMonth = Provider.of<DateRepository>(context).selectedMonth;
+    final dateProvider = Provider.of<DateRepository>(context, listen: false);
 
     bool canCreateTransactions = false;
+    Widget? goHomeButton;
     if (onHomeTab) {
       if (currentYear == selectedYear && currentMonth == selectedMonth ||
           selectedMonth == null && selectedYear == null) {
         canCreateTransactions = true;
+      } else {
+        goHomeButton = SizedBox(
+          width: 150,
+          child: FloatingActionButton(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            backgroundColor: Colors.blue,
+            onPressed: () {
+              dateProvider.selectedMonth = currentMonth;
+              dateProvider.selectedYear = currentYear;
+            },
+            child:
+                const Row(children: [Icon(Icons.home), Text('Current Month')]),
+          ),
+        );
       }
     }
 
@@ -76,7 +93,10 @@ class _HomePageState extends State<HomePage> {
       appBar: TopBar(changeTabCallback: _changeOnHomeTab),
       floatingActionButton: canCreateTransactions
           ? CreateTransactionButtons(dialogCallback: _showTransactionDialog)
-          : null,
+          : goHomeButton,
+      floatingActionButtonLocation: canCreateTransactions
+          ? null
+          : FloatingActionButtonLocation.centerFloat,
       body: TabBarView(
         physics: const NeverScrollableScrollPhysics(),
         children: [
