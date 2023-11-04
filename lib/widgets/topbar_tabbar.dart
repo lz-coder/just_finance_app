@@ -31,7 +31,7 @@ class TopbarTabBar extends StatelessWidget implements PreferredSizeWidget {
           }
         },
         tabs: const [
-          Tab(icon: Icon(Icons.home)),
+          Tab(icon: Icon(Icons.money)),
           Tab(icon: Icon(Icons.pie_chart)),
         ]);
   }
