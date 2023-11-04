@@ -85,9 +85,9 @@ class _YearDrawerButtonState extends State<YearDrawerButton> {
                                 Icons.square_rounded,
                                 size: 14,
                               )
-                            : null,
+                            : const Spacer(),
                         title: Text(
-                            '${month.monthName!} (${month.monthNumber == currentMonth ? "current" : ""})'),
+                            '${month.monthName!} ${month.monthNumber == currentMonth ? "(current)" : ""}'),
                         onTap: () {
                           dateProvider.selectedMonth = month.monthNumber;
                           dateProvider.selectedYear = widget.year.year;
