@@ -6,6 +6,7 @@ import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/src/month.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
 import 'package:just_finance_app/widgets/transaction_card.dart';
+import 'package:just_finance_app/widgets/transactions_counter.dart';
 import 'package:provider/provider.dart';
 
 final coreDatabase = CoreDatabase();
@@ -75,21 +76,10 @@ class HomePageTransactions extends StatelessWidget {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.arrow_upward,
-                              color: Colors.green,
-                            ),
-                            Text('$incomeCounter'),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const Icon(Icons.arrow_downward, color: Colors.red),
-                            Text('$expenseCounter')
-                          ],
-                        ),
+                        TransactionsCounter(
+                            income: true, counter: incomeCounter),
+                        TransactionsCounter(
+                            income: false, counter: expenseCounter),
                       ],
                     );
                   },
