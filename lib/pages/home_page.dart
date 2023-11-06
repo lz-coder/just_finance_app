@@ -94,9 +94,9 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: canCreateTransactions
           ? CreateTransactionButtons(dialogCallback: _showTransactionDialog)
           : goHomeButton,
-      floatingActionButtonLocation: canCreateTransactions
-          ? null
-          : FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: goHomeButton != null && onHomeTab
+          ? FloatingActionButtonLocation.centerFloat
+          : null,
       body: TabBarView(
         physics: const NeverScrollableScrollPhysics(),
         children: [
@@ -109,7 +109,11 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       drawer: Drawer(
-        //width: 240,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+        )),
         child: Column(
           children: [
             const SizedBox(
@@ -126,11 +130,14 @@ class _HomePageState extends State<HomePage> {
                     return ListView.builder(
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
-                        return YearDrawerButton(year: snapshot.data![index]);
+                        return YearDrawerButton(
+                          year:
+                              snapshot.data![snapshot.data!.length - index - 1],
+                        );
                       },
                     );
                   } else {
-                    return const Text('');
+                    return const SizedBox();
                   }
                 },
               ),
