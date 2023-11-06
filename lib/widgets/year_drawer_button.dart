@@ -18,11 +18,20 @@ class YearDrawerButton extends StatefulWidget {
 
 class _YearDrawerButtonState extends State<YearDrawerButton> {
   bool isYearActive = false;
+  Future<List<Month>?>? _monthsFromYear;
 
   void activeYear() {
     setState(() {
       isYearActive = !isYearActive;
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _monthsFromYear = coreDatabase.getMonthsFromYear(
+        year: widget.year.year, context: context);
   }
 
   @override
@@ -32,12 +41,15 @@ class _YearDrawerButtonState extends State<YearDrawerButton> {
         Provider.of<DateRepository>(context, listen: false).currentYear!;
     final int currentMonth =
         Provider.of<DateRepository>(context, listen: false).currentMonth!;
-
+    final int? selectedYear = Provider.of<DateRepository>(context).selectedYear;
     List<Month> months = [];
 
+    // if (selectedYear != null && selectedYear == widget.year.year) {
+    // isYearActive = true;
+    // }
+
     return FutureBuilder(
-      future: coreDatabase.getMonthsFromYear(
-          year: widget.year.year, context: context),
+      future: _monthsFromYear,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           months = snapshot.data!;
@@ -53,7 +65,7 @@ class _YearDrawerButtonState extends State<YearDrawerButton> {
                           : Icons.arrow_drop_down,
                       size: 32,
                     )
-                  : null,
+                  : const SizedBox(),
               title: Text(
                 '${widget.year.year}',
                 style: const TextStyle(fontSize: 15),
@@ -80,12 +92,14 @@ class _YearDrawerButtonState extends State<YearDrawerButton> {
                       final month = months[index];
                       return ListTile(
                         titleAlignment: ListTileTitleAlignment.center,
-                        leading: month.monthNumber == dateProvider.selectedMonth
-                            ? const Icon(
-                                Icons.square_rounded,
-                                size: 14,
-                              )
-                            : const Spacer(),
+                        leading:
+                            month.monthNumber == dateProvider.selectedMonth &&
+                                    selectedYear == widget.year.year
+                                ? const Icon(
+                                    Icons.square_rounded,
+                                    size: 14,
+                                  )
+                                : const SizedBox(),
                         title: Text(
                             '${month.monthName!} ${month.monthNumber == currentMonth ? "(current)" : ""}'),
                         onTap: () {
