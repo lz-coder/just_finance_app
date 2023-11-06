@@ -36,10 +36,6 @@ class _TransactionDialogState extends State<TransactionDialog> {
     Navigator.of(context).pop();
   }
 
-  void _updateDialog() {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     if (widget.transaction != null) {
