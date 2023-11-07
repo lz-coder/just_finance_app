@@ -37,6 +37,7 @@ class TransactionCard extends StatelessWidget {
         trailing: Column(
           children: [
             Text(transaction.date),
+            const SizedBox(height: 6),
             Text(
               Currency(locale: getCurrentLocale(context))
                   .show(transaction.value),
