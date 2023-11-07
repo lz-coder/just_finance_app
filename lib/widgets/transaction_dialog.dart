@@ -33,7 +33,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
   Category? preSelectedCategory;
   final BorderRadiusGeometry dialogBorderRadius =
       const BorderRadius.all(Radius.circular(20));
-  String? _defaultTransactionTitle;
+  String? defaultTransactionTitle;
 
   void closeDialog(BuildContext context) {
     Navigator.of(context).pop();
@@ -41,7 +41,10 @@ class _TransactionDialogState extends State<TransactionDialog> {
 
   @override
   Widget build(BuildContext context) {
-    _defaultTransactionTitle = AppLocalizations.of(context)!.transactionCardNew;
+    String defaultTransactionTitle =
+        AppLocalizations.of(context)!.transactionCardNew;
+    Category? deletedCategory =
+        Provider.of<CategoryRepository>(context).deletedCategory;
 
     if (widget.transaction != null) {
       valueController.text = widget.transaction!.value.toString();
@@ -104,20 +107,21 @@ class _TransactionDialogState extends State<TransactionDialog> {
                             value: categorie, label: categorie.name));
                       }
 
-                      if (widget.transaction != null &&
-                          selectedCategory == null) {
-                        for (Category category in snapshot.data!) {
-                          if (category.id == widget.transaction!.category) {
-                            selectedCategory = category;
+                      if (widget.transaction != null) {
+                        if (selectedCategory == null) {
+                          for (Category category in snapshot.data!) {
+                            if (category.id == widget.transaction!.category) {
+                              selectedCategory = category;
+                            }
+                          }
+                        } else {
+                          if (deletedCategory != null &&
+                              selectedCategory!.id == deletedCategory.id) {
+                            selectedCategory = snapshot.data![0];
                           }
                         }
-                      } else if (widget.transaction == null &&
-                          selectedCategory == null) {
-                        preSelectedCategory = snapshot.data![0];
                       } else {
-                        if (!snapshot.data!.contains(selectedCategory)) {
-                          selectedCategory = snapshot.data![0];
-                        }
+                        preSelectedCategory = snapshot.data![0];
                       }
 
                       return Row(
@@ -144,16 +148,18 @@ class _TransactionDialogState extends State<TransactionDialog> {
                               onPressed: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        const CategoriesEditor()),
+                                  builder: (context) =>
+                                      const CategoriesEditor(),
+                                ),
                               ),
                               child: const Icon(Icons.edit, size: 28),
                             ),
                           )
                         ],
                       );
+                    } else {
+                      return const CircularProgressIndicator();
                     }
-                    return const CircularProgressIndicator();
                   },
                 ),
                 Row(
@@ -175,7 +181,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                               id: lastTransactionId,
                               title: titleController.text.isNotEmpty
                                   ? titleController.text
-                                  : _defaultTransactionTitle!,
+                                  : defaultTransactionTitle,
                               income: widget.income ? 1 : 0,
                               value: valueController.text.isNotEmpty
                                   ? double.parse(valueController.text)
