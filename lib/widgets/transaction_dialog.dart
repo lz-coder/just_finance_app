@@ -33,6 +33,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
   Category? preSelectedCategory;
   final BorderRadiusGeometry dialogBorderRadius =
       const BorderRadius.all(Radius.circular(20));
+  String? _defaultTransactionTitle;
 
   void closeDialog(BuildContext context) {
     Navigator.of(context).pop();
@@ -40,9 +41,16 @@ class _TransactionDialogState extends State<TransactionDialog> {
 
   @override
   Widget build(BuildContext context) {
+    _defaultTransactionTitle = AppLocalizations.of(context)!.transactionCardNew;
+
     if (widget.transaction != null) {
       valueController.text = widget.transaction!.value.toString();
       titleController.text = widget.transaction!.title;
+    }
+
+    Future<void> insertTransaction(TransactionInfo transaction) async {
+      await Provider.of<WalletRepository>(context, listen: false)
+          .insertTransaction(transaction);
     }
 
     return Consumer<CategoryRepository>(builder: (context, value, child) {
@@ -167,9 +175,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                               id: lastTransactionId,
                               title: titleController.text.isNotEmpty
                                   ? titleController.text
-                                  // ignore: use_build_context_synchronously
-                                  : AppLocalizations.of(context)!
-                                      .transactionCardNew,
+                                  : _defaultTransactionTitle!,
                               income: widget.income ? 1 : 0,
                               value: valueController.text.isNotEmpty
                                   ? double.parse(valueController.text)
@@ -184,10 +190,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                               month: DateTime.now().month,
                               date: DateFormat.yMd().format(DateTime.now()),
                             );
-                            // ignore: use_build_context_synchronously
-                            await Provider.of<WalletRepository>(context,
-                                    listen: false)
-                                .insertTransaction(transaction);
+                            await insertTransaction(transaction);
                           } else {
                             widget.transaction!.title = titleController.text;
                             widget.transaction!.value =
