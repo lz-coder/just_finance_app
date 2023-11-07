@@ -31,6 +31,8 @@ class _TransactionDialogState extends State<TransactionDialog> {
   final categoriesController = TextEditingController();
   Category? selectedCategory;
   Category? preSelectedCategory;
+  final BorderRadiusGeometry dialogBorderRadius =
+      const BorderRadius.all(Radius.circular(20));
 
   void closeDialog(BuildContext context) {
     Navigator.of(context).pop();
@@ -45,6 +47,9 @@ class _TransactionDialogState extends State<TransactionDialog> {
 
     return Consumer<CategoryRepository>(builder: (context, value, child) {
       return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: dialogBorderRadius,
+        ),
         child: SingleChildScrollView(
           child: Container(
             height: 400,
@@ -54,6 +59,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
               color: widget.income
                   ? const Color.fromARGB(155, 39, 80, 51)
                   : const Color.fromARGB(155, 80, 47, 39),
+              borderRadius: dialogBorderRadius,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -85,7 +91,6 @@ class _TransactionDialogState extends State<TransactionDialog> {
                     final List<DropdownMenuEntry<Category>> categoryEntries =
                         [];
                     if (snapshot.hasData) {
-                      //selectedCategorie = snapshot.data![0];
                       for (final categorie in snapshot.data!) {
                         categoryEntries.add(DropdownMenuEntry(
                             value: categorie, label: categorie.name));
@@ -110,20 +115,23 @@ class _TransactionDialogState extends State<TransactionDialog> {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          DropdownMenu<Category>(
-                            width: 180,
-                            initialSelection:
-                                preSelectedCategory ?? selectedCategory,
-                            controller: categoriesController,
-                            label: Text(AppLocalizations.of(context)!
-                                .transactionDialogCategorieLabel),
-                            dropdownMenuEntries: categoryEntries,
-                            onSelected: (Category? categorie) {
-                              selectedCategory = categorie;
-                            },
+                          Expanded(
+                            child: DropdownMenu<Category>(
+                              enableFilter: true,
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              initialSelection:
+                                  preSelectedCategory ?? selectedCategory,
+                              controller: categoriesController,
+                              label: Text(AppLocalizations.of(context)!
+                                  .transactionDialogCategorieLabel),
+                              dropdownMenuEntries: categoryEntries,
+                              onSelected: (Category? category) {
+                                selectedCategory = category;
+                              },
+                            ),
                           ),
                           SizedBox(
-                            width: 48,
+                            width: MediaQuery.of(context).size.width * 0.15,
                             height: 48,
                             child: OutlinedButton(
                               onPressed: () => Navigator.push(
