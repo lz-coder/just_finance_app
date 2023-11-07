@@ -117,7 +117,6 @@ class _TransactionDialogState extends State<TransactionDialog> {
                         children: [
                           Expanded(
                             child: DropdownMenu<Category>(
-                              enableFilter: true,
                               width: MediaQuery.of(context).size.width * 0.5,
                               initialSelection:
                                   preSelectedCategory ?? selectedCategory,
