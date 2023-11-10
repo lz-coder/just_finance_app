@@ -1,18 +1,22 @@
 import 'package:intl/intl.dart';
 
 class Currency {
-  String locale;
+  String? locale;
 
-  Currency({required this.locale});
+  Currency({this.locale});
 
   String show(num value) {
     return NumberFormat.currency(
-            locale: locale, symbol: getCurrencySymbol(locale))
+            locale: locale, symbol: getCurrencySymbol(locale ?? 'en_null'))
         .format(value);
   }
 
   String showMinimum(double value) {
     return NumberFormat.simpleCurrency(locale: locale).format(value);
+  }
+
+  String showValueOnly(num value) {
+    return NumberFormat("#,##0.00", locale).format(value);
   }
 }
 
