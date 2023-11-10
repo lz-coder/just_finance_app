@@ -19,6 +19,7 @@ class YearDrawerButton extends StatefulWidget {
 class _YearDrawerButtonState extends State<YearDrawerButton> {
   bool isYearActive = false;
   Future<List<Month>?>? _monthsFromYear;
+  bool isSelected = false;
 
   void activeYear() {
     setState(() {
@@ -43,10 +44,10 @@ class _YearDrawerButtonState extends State<YearDrawerButton> {
         Provider.of<DateRepository>(context, listen: false).currentMonth!;
     final int? selectedYear = Provider.of<DateRepository>(context).selectedYear;
     List<Month> months = [];
-
-    // if (selectedYear != null && selectedYear == widget.year.year) {
-    // isYearActive = true;
-    // }
+    print(selectedYear);
+    if (selectedYear == widget.year.year) {
+      isSelected = true;
+    }
 
     return FutureBuilder(
       future: _monthsFromYear,
@@ -57,6 +58,7 @@ class _YearDrawerButtonState extends State<YearDrawerButton> {
         return Column(
           children: [
             ListTile(
+              selected: isSelected,
               titleAlignment: ListTileTitleAlignment.center,
               leading: months.isNotEmpty
                   ? Icon(
@@ -74,7 +76,7 @@ class _YearDrawerButtonState extends State<YearDrawerButton> {
               onTap: () {
                 if (months.isEmpty) {
                   dateProvider.selectedMonth = null;
-                  dateProvider.selectedYear = null;
+                  dateProvider.selectedYear = widget.year.year;
                   Navigator.pop(context);
                 } else {
                   activeYear();

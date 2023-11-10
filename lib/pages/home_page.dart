@@ -68,8 +68,9 @@ class _HomePageState extends State<HomePage> {
     bool canCreateTransactions = false;
     Widget? goHomeButton;
     if (onHomeTab) {
-      if (currentYear == selectedYear && currentMonth == selectedMonth ||
-          selectedMonth == null && selectedYear == null) {
+      if ((currentYear == selectedYear && currentMonth == selectedMonth) ||
+          (currentYear == selectedYear && selectedMonth == null) ||
+          (selectedMonth == null && selectedYear == null)) {
         canCreateTransactions = true;
       } else {
         goHomeButton = SizedBox(
