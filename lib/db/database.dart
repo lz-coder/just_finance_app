@@ -84,22 +84,31 @@ class CoreDatabase {
 
   //Years//
   Future<void> insertYear(Year year) async {
-    final db = await _db;
-    await db.insert(
-      _yearsTable,
-      year.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    try {
+      final db = await _db;
+      await db.insert(
+        _yearsTable,
+        year.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
+    }
   }
 
   Future<List<Year>?> getYears() async {
-    final db = await _db;
-    final List<Map<String, dynamic>> maps = await db.query(_yearsTable);
-    if (maps.isNotEmpty) {
-      return List.generate(maps.length, (index) {
-        return Year(year: maps[index]['year']);
-      });
-    } else {
+    try {
+      final db = await _db;
+      final List<Map<String, dynamic>> maps = await db.query(_yearsTable);
+      if (maps.isNotEmpty) {
+        return List.generate(maps.length, (index) {
+          return Year(year: maps[index]['year']);
+        });
+      } else {
+        return null;
+      }
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
       return null;
     }
   }
@@ -108,20 +117,25 @@ class CoreDatabase {
     required int year,
     required BuildContext context,
   }) async {
-    final db = await _db;
-    final List<Map<String, dynamic>> maps = await db.rawQuery(
-      '''SELECT $_transactionsTable.month FROM $_transactionsTable
-        INNER JOIN $_monthsTable ON $_monthsTable.month = $_transactionsTable.month
-        WHERE year = ?
-        GROUP BY $_transactionsTable.month
-      ''',
-      [year],
-    );
-    if (maps.isNotEmpty) {
-      return List.generate(maps.length, (index) {
-        return Month(monthNumber: maps[index]['month'], context: context);
-      });
-    } else {
+    try {
+      final db = await _db;
+      final List<Map<String, dynamic>> maps = await db.rawQuery(
+        '''SELECT $_transactionsTable.month FROM $_transactionsTable
+      INNER JOIN $_monthsTable ON $_monthsTable.month = $_transactionsTable.month
+      WHERE year = ?
+      GROUP BY $_transactionsTable.month
+    ''',
+        [year],
+      );
+      if (maps.isNotEmpty) {
+        return List.generate(maps.length, (index) {
+          return Month(monthNumber: maps[index]['month'], context: context);
+        });
+      } else {
+        return null;
+      }
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
       return null;
     }
   }
@@ -132,15 +146,90 @@ class CoreDatabase {
     required int year,
     required int month,
   }) async {
-    final db = await _db;
-    final List<Map<String, dynamic>> maps =
-        await db.rawQuery('''SELECT * FROM $transactionsTable
-        WHERE year = ? AND month = ?
-      ''', [year, month]);
-    if (maps.isNotEmpty) {
-      return List.generate(
-        maps.length,
-        (index) {
+    try {
+      final db = await _db;
+      final List<Map<String, dynamic>> maps =
+          await db.rawQuery('''SELECT * FROM $transactionsTable
+      WHERE year = ? AND month = ?
+    ''', [year, month]);
+      if (maps.isNotEmpty) {
+        return List.generate(
+          maps.length,
+          (index) {
+            return TransactionInfo(
+              id: maps[index]['id'],
+              title: maps[index]['title'],
+              income: maps[index]['income'],
+              value: maps[index]['value'],
+              category: maps[index]['category'],
+              categoryName: maps[index]['categoryName'],
+              year: maps[index]['year'],
+              month: maps[index]['month'],
+              date: maps[index]['date'],
+            );
+          },
+        );
+      } else {
+        return null;
+      }
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
+      return null;
+    }
+  }
+
+  Future<void> insertTransaction(TransactionInfo transaction,
+      {replace = true}) async {
+    try {
+      final db = await _db;
+      await db.insert(
+        _transactionsTable,
+        transaction.toMap(),
+        conflictAlgorithm:
+            replace ? ConflictAlgorithm.replace : ConflictAlgorithm.ignore,
+      );
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
+    }
+  }
+
+  Future<void> removeTransaction(TransactionInfo transaction) async {
+    try {
+      final db = await _db;
+      await db.delete(
+        _transactionsTable,
+        where: 'id = ?',
+        whereArgs: [transaction.id],
+      );
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
+    }
+  }
+
+  Future<void> updateTransaction(TransactionInfo transaction) async {
+    try {
+      final db = await _db;
+      await db.update(
+        _transactionsTable,
+        transaction.toMap(),
+        where: 'id = ?',
+        whereArgs: [transaction.id],
+      );
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
+    }
+  }
+
+  Future<List<TransactionInfo>?> transactionsList({int? category}) async {
+    try {
+      final db = await _db;
+      final List<Map<String, dynamic>> maps = await db.query(
+        _transactionsTable,
+        where: category != null ? 'category = ?' : null,
+        whereArgs: category != null ? [category] : null,
+      );
+      if (maps.isNotEmpty) {
+        return List.generate(maps.length, (index) {
           return TransactionInfo(
             id: maps[index]['id'],
             title: maps[index]['title'],
@@ -152,104 +241,72 @@ class CoreDatabase {
             month: maps[index]['month'],
             date: maps[index]['date'],
           );
-        },
-      );
-    } else {
+        });
+      } else {
+        return null;
+      }
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
       return null;
     }
   }
 
-  Future<void> insertTransaction(TransactionInfo transaction,
-      {replace = true}) async {
-    final db = await _db;
-    await db.insert(
-      _transactionsTable,
-      transaction.toMap(),
-      conflictAlgorithm:
-          replace ? ConflictAlgorithm.replace : ConflictAlgorithm.ignore,
-    );
-  }
-
-  Future<void> removeTransaction(TransactionInfo transaction) async {
-    final db = await _db;
-    await db.delete(
-      _transactionsTable,
-      where: 'id = ?',
-      whereArgs: [transaction.id],
-    );
-  }
-
-  Future<void> updateTransaction(TransactionInfo transaction) async {
-    final db = await _db;
-    await db.update(
-      _transactionsTable,
-      transaction.toMap(),
-      where: 'id = ?',
-      whereArgs: [transaction.id],
-    );
-  }
-
-  Future<List<TransactionInfo>> transactionsList({int? category}) async {
-    final db = await _db;
-    final List<Map<String, dynamic>> maps = await db.query(
-      _transactionsTable,
-      where: category != null ? 'category = ?' : null,
-      whereArgs: category != null ? [category] : null,
-    );
-
-    return List.generate(maps.length, (index) {
-      return TransactionInfo(
-        id: maps[index]['id'],
-        title: maps[index]['title'],
-        income: maps[index]['income'],
-        value: maps[index]['value'],
-        category: maps[index]['category'],
-        categoryName: maps[index]['categoryName'],
-        year: maps[index]['year'],
-        month: maps[index]['month'],
-        date: maps[index]['date'],
-      );
-    });
-  }
-
-  Future<int> transactionsCount() async {
+  Future<int?>? transactionsCount() async {
     final transactionsList = await this.transactionsList();
-    return transactionsList.length;
+    return transactionsList?.length;
   }
   //////
 
   //Categories//
 
-  Future<List<Category>> categoriesList() async {
-    final db = await _db;
-    final List<Map<String, dynamic>> maps = await db.query(_categoriesTable);
+  Future<List<Category>?> categoriesList() async {
+    try {
+      final db = await _db;
+      final List<Map<String, dynamic>> maps = await db.query(_categoriesTable);
 
-    return List.generate(maps.length, (index) {
-      return Category(
-        id: maps[index]['id'],
-        name: maps[index]['name'],
-        type: maps[index]['type'],
-      );
-    });
+      if (maps.isNotEmpty) {
+        return List.generate(maps.length, (index) {
+          return Category(
+            id: maps[index]['id'],
+            name: maps[index]['name'],
+            type: maps[index]['type'],
+          );
+        });
+      } else {
+        return null;
+      }
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
+      return null;
+    }
   }
 
-  Future<List<Category>> incomeCategories() async {
-    final db = await _db;
-    final List<Map<String, dynamic>> maps = await db.query(
-      _categoriesTable,
-      where: 'type = ?',
-      whereArgs: [CategoryTypes.income],
-    );
-    return List.generate(maps.length, (index) {
-      return Category(
-        id: maps[index]['id'],
-        name: maps[index]['name'],
-        type: maps[index]['type'],
+  Future<List<Category>?> incomeCategories() async {
+    try {
+      final db = await _db;
+      final List<Map<String, dynamic>> maps = await db.query(
+        _categoriesTable,
+        where: 'type = ?',
+        whereArgs: [CategoryTypes.income],
       );
-    });
+      if (maps.isNotEmpty) {
+        return List.generate(maps.length, (index) {
+          return Category(
+            id: maps[index]['id'],
+            name: maps[index]['name'],
+            type: maps[index]['type'],
+          );
+        });
+      } else {
+        return null;
+      }
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
+      return null;
+    }
   }
 
-  Future<List<Category>> expenseCategories() async {
+  Future<List<Category>?> expenseCategories() async {
     final db = await _db;
     final List<Map<String, dynamic>> maps = await db.query(
       _categoriesTable,
@@ -266,88 +323,118 @@ class CoreDatabase {
   }
 
   Future<Category?> getCategoryById(int id) async {
-    final db = await _db;
-    final List<Map<String, dynamic>> map = await db.query(
-      _categoriesTable,
-      where: 'id = ?',
-      whereArgs: [id],
-      limit: 1,
-    );
-    if (map.isNotEmpty) {
-      return Category(
-        id: map[0]['id'],
-        name: map[0]['name'],
-        type: map[0]['type'],
+    try {
+      final db = await _db;
+      final List<Map<String, dynamic>> map = await db.query(
+        _categoriesTable,
+        where: 'id = ?',
+        whereArgs: [id],
+        limit: 1,
       );
-    } else {
+      if (map.isNotEmpty) {
+        return Category(
+          id: map[0]['id'],
+          name: map[0]['name'],
+          type: map[0]['type'],
+        );
+      } else {
+        return null;
+      }
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
       return null;
     }
   }
 
   Future<void> insertCategory(Category category) async {
-    final db = await _db;
-    await db.insert(
-      _categoriesTable,
-      category.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.ignore,
-    );
+    try {
+      final db = await _db;
+      await db.insert(
+        _categoriesTable,
+        category.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.ignore,
+      );
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
+    }
   }
 
   Future<void> updateCategory(Category category) async {
-    final db = await _db;
-    await db.update(
-      _categoriesTable,
-      category.toMap(),
-      where: 'id = ?',
-      whereArgs: [category.id],
-    );
+    try {
+      final db = await _db;
+      await db.update(
+        _categoriesTable,
+        category.toMap(),
+        where: 'id = ?',
+        whereArgs: [category.id],
+      );
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
+    }
   }
 
   Future<void> deleteCategory(Category category) async {
-    final db = await _db;
-    await db.delete(
-      _categoriesTable,
-      where: 'id = ?',
-      whereArgs: [category.id],
-    );
+    try {
+      final db = await _db;
+      await db.delete(
+        _categoriesTable,
+        where: 'id = ?',
+        whereArgs: [category.id],
+      );
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
+    }
   }
 
   //Configs//
   Future<void> insertConfig(Config config) async {
-    final db = await _db;
-    await db.insert(
-      _configsTable,
-      config.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.ignore,
-    );
+    try {
+      final db = await _db;
+      await db.insert(
+        _configsTable,
+        config.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.ignore,
+      );
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
+    }
   }
 
   Future<Config?> getConfig(String configName) async {
-    final db = await _db;
-    final List<Map<String, dynamic>> map = await db.query(
-      _configsTable,
-      where: 'name = ?',
-      whereArgs: [configName],
-    );
-    if (map.isNotEmpty) {
-      return Config(
-        id: map[0]['id'],
-        name: map[0]['name'],
-        value: map[0]['value'],
+    try {
+      final db = await _db;
+      final List<Map<String, dynamic>> map = await db.query(
+        _configsTable,
+        where: 'name = ?',
+        whereArgs: [configName],
       );
-    } else {
+      if (map.isNotEmpty) {
+        return Config(
+          id: map[0]['id'],
+          name: map[0]['name'],
+          value: map[0]['value'],
+        );
+      } else {
+        return null;
+      }
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
       return null;
     }
   }
 
   Future<void> updateConfig(String configName, String value) async {
-    final db = await _db;
-    await db.update(
-      _configsTable,
-      {"value": value},
-      where: 'name = ?',
-      whereArgs: [configName],
-    );
+    try {
+      final db = await _db;
+      await db.update(
+        _configsTable,
+        {"value": value},
+        where: 'name = ?',
+        whereArgs: [configName],
+      );
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
+    }
   }
   ////
 }
