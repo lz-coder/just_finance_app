@@ -5,6 +5,8 @@ import 'package:just_finance_app/Repository/wallet_repository.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/pages/categories_editor_page.dart';
 import 'package:just_finance_app/src/category.dart';
+import 'package:just_finance_app/src/core_functions.dart';
+import 'package:just_finance_app/src/currency.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -47,7 +49,8 @@ class _TransactionDialogState extends State<TransactionDialog> {
         Provider.of<CategoryRepository>(context).deletedCategory;
 
     if (widget.transaction != null) {
-      valueController.text = widget.transaction!.value.toString();
+      valueController.text = Currency(locale: getCurrentLocale(context))
+          .showValueOnly(widget.transaction!.value);
       titleController.text = widget.transaction!.title;
     }
 
@@ -88,7 +91,8 @@ class _TransactionDialogState extends State<TransactionDialog> {
                           .transactionDialogTitleLabel)),
                 ),
                 TextField(
-                  keyboardType: TextInputType.number,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
                   controller: valueController,
                   decoration: InputDecoration(
                       label: Text(AppLocalizations.of(context)!
@@ -170,9 +174,9 @@ class _TransactionDialogState extends State<TransactionDialog> {
                         try {
                           if (widget.transaction == null) {
                             late int lastTransactionId;
-                            final transactionsList =
+                            final List<TransactionInfo>? transactionsList =
                                 await coreDatabase.transactionsList();
-                            if (transactionsList.isNotEmpty) {
+                            if (transactionsList != null) {
                               lastTransactionId = transactionsList.last.id + 1;
                             } else {
                               lastTransactionId = 0;
@@ -184,7 +188,8 @@ class _TransactionDialogState extends State<TransactionDialog> {
                                   : defaultTransactionTitle,
                               income: widget.income ? 1 : 0,
                               value: valueController.text.isNotEmpty
-                                  ? double.parse(valueController.text)
+                                  ? double.parse(valueController.text
+                                      .replaceAll(RegExp(r'[^0-9]'), ''))
                                   : 1,
                               category: selectedCategory != null
                                   ? selectedCategory!.id
@@ -199,8 +204,9 @@ class _TransactionDialogState extends State<TransactionDialog> {
                             await insertTransaction(transaction);
                           } else {
                             widget.transaction!.title = titleController.text;
-                            widget.transaction!.value =
-                                double.parse(valueController.text);
+                            widget.transaction!.value = double.parse(
+                                valueController.text
+                                    .replaceAll(RegExp(r'[^0-9]'), ''));
                             widget.transaction!.category = selectedCategory!.id;
                             widget.transaction!.categoryName =
                                 selectedCategory!.name;
