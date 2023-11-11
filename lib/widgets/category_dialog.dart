@@ -68,9 +68,9 @@ class _CategorieDialogState extends State<CategoryDialog> {
                         updateCategory(widget.category!);
                       } else {
                         late int lastCategorieId;
-                        final categoriesList =
+                        final List<Category>? categoriesList =
                             await coreDatabase.categoriesList();
-                        if (categoriesList.isNotEmpty) {
+                        if (categoriesList != null) {
                           lastCategorieId = categoriesList.last.id + 1;
                         } else {
                           lastCategorieId = 0;

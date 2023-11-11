@@ -33,17 +33,20 @@ class WalletRepository extends ChangeNotifier {
   }
 
   void updateWalletValue() async {
-    var transactions = await coreDatabase.transactionsList();
+    final List<TransactionInfo>? transactions =
+        await coreDatabase.transactionsList();
     double newWalletValue = 0;
     double newIncomeValue = 0;
     double newExpenseValue = 0;
-    for (var transaction in transactions) {
-      if (transaction.income == 1) {
-        newWalletValue += transaction.value;
-        newIncomeValue += transaction.value;
-      } else {
-        newWalletValue -= transaction.value;
-        newExpenseValue += transaction.value;
+    if (transactions != null) {
+      for (var transaction in transactions) {
+        if (transaction.income == 1) {
+          newWalletValue += transaction.value;
+          newIncomeValue += transaction.value;
+        } else {
+          newWalletValue -= transaction.value;
+          newExpenseValue += transaction.value;
+        }
       }
     }
     _walletTotalValue = newWalletValue;
