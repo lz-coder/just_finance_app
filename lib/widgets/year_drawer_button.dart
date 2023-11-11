@@ -29,10 +29,12 @@ class _YearDrawerButtonState extends State<YearDrawerButton> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _monthsFromYear = coreDatabase.getMonthsFromYear(
         year: widget.year.year, context: context);
+    if (widget.year.year == DateTime.now().year) {
+      isSelected = true;
+    }
   }
 
   @override
@@ -44,7 +46,6 @@ class _YearDrawerButtonState extends State<YearDrawerButton> {
         Provider.of<DateRepository>(context, listen: false).currentMonth!;
     final int? selectedYear = Provider.of<DateRepository>(context).selectedYear;
     List<Month> months = [];
-    print(selectedYear);
     if (selectedYear == widget.year.year) {
       isSelected = true;
     }
