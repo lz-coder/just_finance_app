@@ -1,4 +1,19 @@
-- name: Flutter Runner
-  # You may pin to the exact commit or the version.
-  # uses: jddeep/Flutter-Runner@56254d611d8b799e297ab6f81ab4ec5dd0d128a2
-  uses: jddeep/Flutter-Runner@1.2.0
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main # ajuste conforme necessário
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Build APK and Create Release
+      uses: Dank-del/flutter-build-and-publish-action@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
