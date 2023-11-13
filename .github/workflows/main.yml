@@ -11,6 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - name: Set Version
+        run: |
+          cat pubspec.yaml | grep version: | awk '{print $2}'
+          echo "VERSION=$(cat pubspec.yaml | grep version: | awk '{print $2}')"
+          echo $VERSION
+        shell: bash
+
       - uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
@@ -26,5 +34,5 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/apk/release/*"
-          tag: v0.0.1
+          tag: $VERSION
           token: ${{ secrets.TOKEN }}
