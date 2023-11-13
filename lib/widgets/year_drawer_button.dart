@@ -101,8 +101,7 @@ class _YearDrawerButtonState extends State<YearDrawerButton> {
                         leading: month.monthNumber ==
                                         dateProvider.selectedMonth &&
                                     selectedYear == widget.year.year ||
-                                month.monthNumber ==
-                                        dateProvider.currentMonth &&
+                                month.monthNumber == currentMonth &&
                                     widget.year.year == dateProvider.currentYear
                             ? const Icon(
                                 Icons.square_rounded,
