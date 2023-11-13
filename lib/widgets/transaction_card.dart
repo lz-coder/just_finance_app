@@ -41,7 +41,7 @@ class TransactionCard extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               Currency(locale: getCurrentLocale(context))
-                  .show(transaction.value),
+                  .showValueWithSymbol(transaction.value),
               style: const TextStyle(fontSize: 18),
             ),
           ],
