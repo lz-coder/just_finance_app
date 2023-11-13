@@ -3,17 +3,15 @@ name: Build and Release
 on:
   push:
     branches:
-      - main # ajuste conforme necessário
+      - main
 
 jobs:
   build:
     runs-on: macos-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
     - name: Build APK and Create Release
       uses: Dank-del/flutter-build-and-publish-action@v1
+      
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
