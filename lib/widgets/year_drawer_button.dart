@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_finance_app/l10n/app_localizations.dart';
 import 'package:just_finance_app/repository/date_repository.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/src/month.dart';
@@ -73,7 +74,9 @@ class _YearDrawerButtonState extends State<YearDrawerButton> {
                 '${widget.year.year}',
                 style: const TextStyle(fontSize: 15),
               ),
-              trailing: Text(widget.year.year == currentYear ? 'Current' : ''),
+              trailing: Text(widget.year.year == currentYear
+                  ? '${AppLocalizations.of(context)?.drawerButtonCurrentLabel}'
+                  : ''),
               onTap: () {
                 if (months.isEmpty) {
                   dateProvider.selectedMonth = null;
@@ -95,16 +98,27 @@ class _YearDrawerButtonState extends State<YearDrawerButton> {
                       final month = months[index];
                       return ListTile(
                         titleAlignment: ListTileTitleAlignment.center,
-                        leading:
-                            month.monthNumber == dateProvider.selectedMonth &&
-                                    selectedYear == widget.year.year
-                                ? const Icon(
-                                    Icons.square_rounded,
-                                    size: 14,
-                                  )
-                                : const SizedBox(),
-                        title: Text(
-                            '${month.monthName!} ${month.monthNumber == currentMonth ? "(current)" : ""}'),
+                        leading: month.monthNumber ==
+                                        dateProvider.selectedMonth &&
+                                    selectedYear == widget.year.year ||
+                                month.monthNumber ==
+                                        dateProvider.currentMonth &&
+                                    widget.year.year == dateProvider.currentYear
+                            ? const Icon(
+                                Icons.square_rounded,
+                                size: 14,
+                              )
+                            : const SizedBox(),
+                        title: Row(
+                          children: [
+                            Text(month.monthName!),
+                            if (widget.year.year == dateProvider.currentYear &&
+                                month.monthNumber == dateProvider.currentMonth)
+                              const SizedBox(width: 20),
+                            Text(
+                                '(${AppLocalizations.of(context)?.drawerButtonCurrentLabel})')
+                          ],
+                        ),
                         onTap: () {
                           dateProvider.selectedMonth = month.monthNumber;
                           dateProvider.selectedYear = widget.year.year;
