@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:just_finance_app/Repository/config_repository.dart';
-import 'package:just_finance_app/Repository/date_repository.dart';
+import 'package:just_finance_app/repository/config_repository.dart';
+import 'package:just_finance_app/repository/date_repository.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/pages/home_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

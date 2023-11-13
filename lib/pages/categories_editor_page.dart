@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:just_finance_app/Repository/category_repository.dart';
+import 'package:just_finance_app/repository/category_repository.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/l10n/app_localizations.dart';
 import 'package:just_finance_app/src/category.dart';
@@ -50,7 +50,7 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
   void _showDeleteCategoryDialog({required Category category}) {
     Future<void> setDefaultCategory() async {
       List<TransactionInfo>? transactions =
-          await coreDatabase.transactionsList(category: category.id);
+          await coreDatabase.getTransactions(category: category.id);
       if (transactions != null) {
         for (TransactionInfo transaction in transactions) {
           if (category.type == CategoryTypes.income) {
@@ -130,8 +130,8 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
               enableFeedback: false,
               splashFactory: NoSplash.splashFactory,
               tabs: [
-                Tab(text: AppLocalizations.of(context)!.categorieTypeIncome),
-                Tab(text: AppLocalizations.of(context)!.categorieTypeExpense),
+                Tab(text: AppLocalizations.of(context)!.transactionIncome),
+                Tab(text: AppLocalizations.of(context)!.transactionExpense),
               ],
             ),
           ),

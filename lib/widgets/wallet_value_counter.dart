@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:just_finance_app/Repository/wallet_repository.dart';
+import 'package:just_finance_app/repository/wallet_repository.dart';
 import 'package:just_finance_app/src/core_functions.dart';
 import 'package:just_finance_app/src/currency.dart';
 import 'package:provider/provider.dart';

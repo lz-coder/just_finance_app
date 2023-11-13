@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:just_finance_app/Repository/date_repository.dart';
-import 'package:just_finance_app/Repository/wallet_repository.dart';
+import 'package:just_finance_app/repository/date_repository.dart';
+import 'package:just_finance_app/repository/wallet_repository.dart';
 import 'package:just_finance_app/pages/home_page_graphics.dart';
 import 'package:just_finance_app/pages/home_page_transactions.dart';
 import 'package:just_finance_app/src/transaction_info.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:just_finance_app/Repository/category_repository.dart';
+import 'package:just_finance_app/repository/category_repository.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/l10n/app_localizations.dart';
 import 'package:just_finance_app/src/category.dart';

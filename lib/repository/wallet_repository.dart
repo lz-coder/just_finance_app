@@ -34,7 +34,7 @@ class WalletRepository extends ChangeNotifier {
 
   void updateWalletValue() async {
     final List<TransactionInfo>? transactions =
-        await coreDatabase.transactionsList();
+        await coreDatabase.getTransactions();
     double newWalletValue = 0;
     double newIncomeValue = 0;
     double newExpenseValue = 0;

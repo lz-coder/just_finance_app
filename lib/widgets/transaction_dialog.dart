@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:just_finance_app/Repository/category_repository.dart';
-import 'package:just_finance_app/Repository/wallet_repository.dart';
+import 'package:just_finance_app/repository/category_repository.dart';
+import 'package:just_finance_app/repository/wallet_repository.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/pages/categories_editor_page.dart';
 import 'package:just_finance_app/src/category.dart';
@@ -175,7 +175,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
                           if (widget.transaction == null) {
                             late int lastTransactionId;
                             final List<TransactionInfo>? transactionsList =
-                                await coreDatabase.transactionsList();
+                                await coreDatabase.getTransactions();
                             if (transactionsList != null) {
                               lastTransactionId = transactionsList.last.id + 1;
                             } else {
