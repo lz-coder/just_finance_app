@@ -35,8 +35,8 @@ class CategoryCard extends StatelessWidget {
         ),
         subtitle: Text(
           category.type == CategoryTypes.income
-              ? AppLocalizations.of(context)!.categorieTypeIncome
-              : AppLocalizations.of(context)!.categorieTypeExpense,
+              ? AppLocalizations.of(context)!.transactionIncome
+              : AppLocalizations.of(context)!.transactionExpense,
           style: TextStyle(
             color: category.type == CategoryTypes.expense
                 ? Colors.red
