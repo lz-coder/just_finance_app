@@ -2,18 +2,22 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:just_finance_app/db/database.dart';
 import 'package:just_finance_app/l10n/app_localizations.dart';
+import 'package:just_finance_app/resources/app_colors.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
 
 final CoreDatabase coreDatabase = CoreDatabase();
 
 class YearMonthChart extends StatelessWidget {
   const YearMonthChart({super.key, required this.context});
-  final Color _line1Color = Colors.green;
-  final Color _line2Color = Colors.red;
+  final Color _line1Color = AppColors.incomeChartColor;
+  final Color _line2Color = AppColors.expenseChartColor;
   final BuildContext context;
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(fontSize: 10, fontWeight: FontWeight.bold);
+    const style = TextStyle(
+      fontSize: 13,
+      fontWeight: FontWeight.bold,
+    );
 
     String text;
     switch (value.toInt()) {
@@ -67,7 +71,10 @@ class YearMonthChart extends StatelessWidget {
     return SideTitleWidget(
       axisSide: meta.axisSide,
       space: 4,
-      child: Text(text, style: style),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 4),
+        child: Text(text, style: style),
+      ),
     );
   }
 
@@ -115,7 +122,7 @@ class YearMonthChart extends StatelessWidget {
       aspectRatio: 2,
       child: Padding(
         padding: const EdgeInsets.only(
-          left: 20,
+          left: 30,
           right: 30,
           top: 10,
           bottom: 0,

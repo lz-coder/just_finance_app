@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_finance_app/db/database.dart';
+import 'package:just_finance_app/resources/app_colors.dart';
 import 'package:just_finance_app/src/core_functions.dart';
 import 'package:just_finance_app/src/currency.dart';
 import 'package:just_finance_app/src/transaction_info.dart';
@@ -23,8 +24,8 @@ class TransactionCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: transaction.income == 0
-            ? const Color.fromARGB(204, 117, 76, 76)
-            : const Color.fromARGB(204, 83, 117, 76),
+            ? AppColors.expenseColor
+            : AppColors.incomeColor,
       ),
       child: ListTile(
         titleAlignment: ListTileTitleAlignment.center,
