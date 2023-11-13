@@ -32,9 +32,6 @@
     "categoriesDialogTitleNew": "New Category",
     "categoriesDialogTitleEdit": "Edit Category",
 
-    "categorieTypeIncome": "Income",
-    "categorieTypeExpense": "Expense",
-
     "deleteCategoryDialogTitle": "Delete Category",
     "deleteCategoryDialogMessage": "This action cannot be undone!",
 
