@@ -32,9 +32,6 @@
     "categoriesDialogTitleNew": "Nova Categoria",
     "categoriesDialogTitleEdit": "Editar Categoria",
   
-    "categorieTypeIncome": "Receita",
-    "categorieTypeExpense": "Despesa",
-  
     "deleteCategoryDialogTitle": "Excluir Categoria",
     "deleteCategoryDialogMessage": "Essa ação não pode ser desfeita!",
   
@@ -49,6 +46,8 @@
     "calendarMonthSeptember": "Setembro",
     "calendarMonthOctober": "Outubro",
     "calendarMonthNovember": "Novembro",
-    "calendarMonthDecember": "Dezembro"
+    "calendarMonthDecember": "Dezembro",
+
+    "drawerButtonCurrentLabel": "Atual"
   }
   

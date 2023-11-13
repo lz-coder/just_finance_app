@@ -46,6 +46,8 @@
     "calendarMonthSeptember": "September",
     "calendarMonthOctober": "October",
     "calendarMonthNovember": "November",
-    "calendarMonthDecember": "December"
+    "calendarMonthDecember": "December",
+
+    "drawerButtonCurrentLabel": "Current"
     
 }
