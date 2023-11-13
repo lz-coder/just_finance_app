@@ -47,10 +47,11 @@ class _TransactionDialogState extends State<TransactionDialog> {
         AppLocalizations.of(context)!.transactionCardNew;
     Category? deletedCategory =
         Provider.of<CategoryRepository>(context).deletedCategory;
+    final String currentLocale = getCurrentLocale(context);
 
     if (widget.transaction != null) {
       valueController.text = Currency(locale: getCurrentLocale(context))
-          .showValueOnly(widget.transaction!.value);
+          .showValue(widget.transaction!.value);
       titleController.text = widget.transaction!.title;
     }
 
@@ -188,8 +189,8 @@ class _TransactionDialogState extends State<TransactionDialog> {
                                   : defaultTransactionTitle,
                               income: widget.income ? 1 : 0,
                               value: valueController.text.isNotEmpty
-                                  ? double.parse(valueController.text
-                                      .replaceAll(RegExp(r'[^0-9]'), ''))
+                                  ? Currency(locale: currentLocale)
+                                      .parseValueToDouble(valueController.text)
                                   : 1,
                               category: selectedCategory != null
                                   ? selectedCategory!.id
@@ -204,9 +205,9 @@ class _TransactionDialogState extends State<TransactionDialog> {
                             await insertTransaction(transaction);
                           } else {
                             widget.transaction!.title = titleController.text;
-                            widget.transaction!.value = double.parse(
-                                valueController.text
-                                    .replaceAll(RegExp(r'[^0-9]'), ''));
+                            widget.transaction!.value =
+                                Currency(locale: currentLocale)
+                                    .parseValueToDouble(valueController.text);
                             widget.transaction!.category = selectedCategory!.id;
                             widget.transaction!.categoryName =
                                 selectedCategory!.name;
