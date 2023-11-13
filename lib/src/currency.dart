@@ -5,18 +5,18 @@ class Currency {
 
   Currency({this.locale});
 
-  String show(num value) {
+  String showValueWithSymbol(num value) {
     return NumberFormat.currency(
             locale: locale, symbol: getCurrencySymbol(locale ?? 'en_null'))
         .format(value);
   }
 
-  String showMinimum(double value) {
-    return NumberFormat.simpleCurrency(locale: locale).format(value);
+  String showValue(num value) {
+    return NumberFormat("#,##0.00", locale).format(value);
   }
 
-  String showValueOnly(num value) {
-    return NumberFormat("#,##0.00", locale).format(value);
+  double parseValueToDouble(String value) {
+    return NumberFormat("#,##0.00", locale).parse(value).toDouble();
   }
 }
 
