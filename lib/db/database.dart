@@ -121,10 +121,10 @@ class CoreDatabase {
       final db = await _db;
       final List<Map<String, dynamic>> maps = await db.rawQuery(
         '''SELECT $_transactionsTable.month FROM $_transactionsTable
-      INNER JOIN $_monthsTable ON $_monthsTable.month = $_transactionsTable.month
-      WHERE year = ?
-      GROUP BY $_transactionsTable.month
-    ''',
+        INNER JOIN $_monthsTable ON $_monthsTable.month = $_transactionsTable.month
+        WHERE year = ?
+        GROUP BY $_transactionsTable.month
+        ''',
         [year],
       );
       if (maps.isNotEmpty) {
@@ -142,6 +142,24 @@ class CoreDatabase {
 
   //Trasactions//
 
+  List<TransactionInfo> transactionListGenerator(
+      List<Map<String, dynamic>> map) {
+    return List.generate(
+      map.length,
+      (index) => TransactionInfo(
+        id: map[index]['id'],
+        title: map[index]['title'],
+        income: map[index]['income'],
+        value: map[index]['value'],
+        category: map[index]['category'],
+        categoryName: map[index]['categoryName'],
+        year: map[index]['year'],
+        month: map[index]['month'],
+        date: map[index]['date'],
+      ),
+    );
+  }
+
   Future<List<TransactionInfo>?> getTransactionsByYearMonth({
     required int year,
     required int month,
@@ -150,25 +168,49 @@ class CoreDatabase {
       final db = await _db;
       final List<Map<String, dynamic>> maps =
           await db.rawQuery('''SELECT * FROM $transactionsTable
-      WHERE year = ? AND month = ?
-    ''', [year, month]);
+            WHERE year = ? AND month = ?
+            ''', [year, month]);
       if (maps.isNotEmpty) {
-        return List.generate(
-          maps.length,
-          (index) {
-            return TransactionInfo(
-              id: maps[index]['id'],
-              title: maps[index]['title'],
-              income: maps[index]['income'],
-              value: maps[index]['value'],
-              category: maps[index]['category'],
-              categoryName: maps[index]['categoryName'],
-              year: maps[index]['year'],
-              month: maps[index]['month'],
-              date: maps[index]['date'],
-            );
-          },
-        );
+        return transactionListGenerator(maps);
+      } else {
+        return null;
+      }
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
+      return null;
+    }
+  }
+
+  Future<List<TransactionInfo>?> getTransactions({int? category}) async {
+    try {
+      final db = await _db;
+      final List<Map<String, dynamic>> maps = await db.query(
+        _transactionsTable,
+        where: category != null ? 'category = ?' : null,
+        whereArgs: category != null ? [category] : null,
+      );
+      if (maps.isNotEmpty) {
+        return transactionListGenerator(maps);
+      } else {
+        return null;
+      }
+    } on Exception catch (e) {
+      debugPrint('[error] $e');
+      return null;
+    }
+  }
+
+  Future<List<TransactionInfo>?> getTransactionsByYear(
+      {required int year}) async {
+    try {
+      final db = await _db;
+      final List<Map<String, dynamic>> maps = await db.query(
+        _transactionsTable,
+        where: 'year = ?',
+        whereArgs: [year],
+      );
+      if (maps.isNotEmpty) {
+        return transactionListGenerator(maps);
       } else {
         return null;
       }
@@ -220,39 +262,8 @@ class CoreDatabase {
     }
   }
 
-  Future<List<TransactionInfo>?> transactionsList({int? category}) async {
-    try {
-      final db = await _db;
-      final List<Map<String, dynamic>> maps = await db.query(
-        _transactionsTable,
-        where: category != null ? 'category = ?' : null,
-        whereArgs: category != null ? [category] : null,
-      );
-      if (maps.isNotEmpty) {
-        return List.generate(maps.length, (index) {
-          return TransactionInfo(
-            id: maps[index]['id'],
-            title: maps[index]['title'],
-            income: maps[index]['income'],
-            value: maps[index]['value'],
-            category: maps[index]['category'],
-            categoryName: maps[index]['categoryName'],
-            year: maps[index]['year'],
-            month: maps[index]['month'],
-            date: maps[index]['date'],
-          );
-        });
-      } else {
-        return null;
-      }
-    } on Exception catch (e) {
-      debugPrint('[error] $e');
-      return null;
-    }
-  }
-
   Future<int?>? transactionsCount() async {
-    final transactionsList = await this.transactionsList();
+    final transactionsList = await getTransactions();
     return transactionsList?.length;
   }
   //////
