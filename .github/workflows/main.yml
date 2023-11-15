@@ -22,7 +22,7 @@ jobs:
         with:
           scheme: semver
           increment: minor
-          release_branch: dev
+          release_branch: main
           
       - name: Changelog
         uses: ardalanamini/auto-changelog@v4
@@ -38,7 +38,6 @@ jobs:
               test: Tests
               refactor: Refactors
               chore: Chores
-              ci: CI
               style: Code Style
               revert: Reverts
             default-commit-type     : Other Changes
