@@ -1,7 +1,7 @@
 name: just_finance_app
 description: Simple finances manager.
 publish_to: 'none'
-version: 0.1.1
+version: 0.1.0
 
 environment:
   sdk: '>=3.1.2 <4.0.0'

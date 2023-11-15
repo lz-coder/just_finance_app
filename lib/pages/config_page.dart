@@ -40,7 +40,7 @@ class _ConfigPageState extends State<ConfigPage> {
       builder: (context) {
         return const AboutDialog(
           applicationName: 'Just Finance',
-          applicationVersion: '0.1.1',
+          applicationVersion: '0.1.0',
           applicationLegalese: 'Copyright © 2023 - Grotbang Dev Group',
         );
       },
