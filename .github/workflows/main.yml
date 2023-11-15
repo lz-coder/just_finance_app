@@ -70,6 +70,6 @@ jobs:
           artifacts: "build/app/outputs/apk/release/*"
           #allowUpdates: true
           generateReleaseNotes: true
-          body: ${{ steps.changelog.outputs.body }}
+          body:  ${{ steps.changelog.outputs.changelog }}
           tag: ${{ steps.version.outputs.version }}
           token: ${{ secrets.TOKEN }}
