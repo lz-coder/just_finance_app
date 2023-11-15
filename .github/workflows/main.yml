@@ -2,7 +2,6 @@ on:
   push:
     branches:
       - main
-      - dev
       
 
 name: Build My Apps
@@ -40,7 +39,7 @@ jobs:
               chore: Chores
               style: Code Style
               revert: Reverts
-            default-commit-type     : Other Changes
+            #default-commit-type     : Other Changes
             release-name            : v${{ steps.version.outputs.version }}
             release-name-prefix     : ""
             mention-authors         : true
