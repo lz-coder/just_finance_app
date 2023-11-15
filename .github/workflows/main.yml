@@ -2,6 +2,8 @@ on:
   push:
     branches:
       - main
+      - dev
+      
 
 name: Build My Apps
 
@@ -11,13 +13,44 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-      - name: Set Version
-        run: |
-          cat pubspec.yaml | grep version: | awk '{print $2}'
-          echo "VERSION=$(cat pubspec.yaml | grep version: | awk '{print $2}')" >> $GITHUB_ENV
-          echo $VERSION
-        shell: bash
+      - name: Get next version
+        uses: reecetech/version-increment@2023.9.3
+        id: version
+        with:
+          scheme: semver
+          increment: minor
+          release_branch: dev
+          
+      - name: Changelog
+        uses: ardalanamini/auto-changelog@v4
+        id  : changelog
+        with:
+            github-token            : ${{ secrets.TOKEN }}
+            commit-types            : |
+              feat: New Features
+              fix: Bug Fixes
+              build: Build System & Dependencies
+              perf: Performance Improvements
+              docs: Documentation
+              test: Tests
+              refactor: Refactors
+              chore: Chores
+              ci: CI
+              style: Code Style
+              revert: Reverts
+            default-commit-type     : Other Changes
+            release-name            : v${{ steps.version.outputs.version }}
+            release-name-prefix     : ""
+            mention-authors         : true
+            mention-new-contributors: true
+            include-compare-link    : true
+            include-pr-links        : true
+            include-commit-links    : true
+            semver                  : true
+            use-github-autolink     : true
 
       - uses: actions/setup-java@v2
         with:
@@ -32,7 +65,11 @@ jobs:
 
       - name: Push to Releases
         uses: ncipollo/release-action@v1
+        id  : release
         with:
           artifacts: "build/app/outputs/apk/release/*"
-          tag: $VERSION
+          #allowUpdates: true
+          generateReleaseNotes: true
+          body: ${{ steps.changelog.outputs.body }}
+          tag: ${{ steps.version.outputs.version }}
           token: ${{ secrets.TOKEN }}
