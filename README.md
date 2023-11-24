@@ -1,6 +1,6 @@
 # just_finance_app
 
-Simple application to control your finances.
+Simple Android application to control your finances.
 It's a personal project that I built with the intention of learning Flutter and Dart, in fact it's the first application I've developed in Flutter.
 Feel free to contribute.
 
